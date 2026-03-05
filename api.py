@@ -1,7 +1,3 @@
-from unittest import case
-
-from lxml.objectify import NoneElement
-
 from db import get_connection
 
 from enum import Enum
@@ -87,7 +83,7 @@ print(validate_permission("1", PermissionLevel.GOD)) # expected False
 # -----------------------------------------------
 # DATA RETRIEVAL
 
-
+# 1. List of Floor plans (getFloorPlans)
 def get_floor_plans():
     with get_connection() as conn:
         with conn.cursor() as cursor:
@@ -99,6 +95,36 @@ def get_floor_plans():
 
 # test get_floor_plans
 print(get_floor_plans())
+
+# 2. List of Rooms (getRooms)
+def get_rooms(building_number,floor_number):
+    with get_connection() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute("""
+            SELECT * FROM Rooms
+            WHERE building_id = %s AND floor_num = %s
+            """, (building_number, floor_number))
+            return cursor.fetchall()
+
+print(get_rooms("002-0",1))
+
+# 3. Selected Room (findRoom)
+def find_room(building_number, floor_number, pixel_coordinates):
+    x_pixel_coordinate = pixel_coordinates[0]
+    y_pixel_coordinate = pixel_coordinates[1]
+    with get_connection() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute("""
+            SELECT building_id, room_num, 
+                   (bounding_top_left_y - bounding_bottom_right_y) * (bounding_bottom_right_x - bounding_top_left_x) as area
+            FROM Rooms 
+            WHERE building_id = %s AND floor_num = %s
+                AND bounding_top_left_x <= %s AND bounding_top_left_y >= %s
+                AND bounding_bottom_right_x >= %s AND bounding_bottom_right_y <= %s
+                ORDER BY area DESC
+                LIMIT 1
+            """,x_pixel_coordinate, y_pixel_coordinate, x_pixel_coordinate,y_pixel_coordinate)
+            return cursor.fetchall()
 # 4. Retrieve Room Information (getRoomInfo)
 def get_room_info(user_id, building_id, room_num):
     # validate permission level

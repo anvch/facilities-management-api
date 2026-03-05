@@ -29,7 +29,8 @@ def convert_perm_level_to_enum(perm_level):
             raise Exception(f"Unknown permission level: {perm_level}")
 
 # 0. Check Permission (validatePermission)
-
+#    If you have a department affiliation, put in BOTH the college and department in required_affiliations
+#    If you have a college affiliation, can just leave required_affiliations['department'] empty
 def validate_permission(user_id, required_perm_level, required_affiliations=None):
     if required_perm_level not in PermissionLevel:
         raise Exception("Invalid permission level")
@@ -56,15 +57,11 @@ def validate_permission(user_id, required_perm_level, required_affiliations=None
 
             if required_affiliations is not None:
                 if user_perm_level in [PermissionLevel.COLLEGE_VIEW, PermissionLevel.COLLEGE_UPDATE]:
-                    if required_affiliations['college'] == rows[0][1]:
-                        return True
-                    else:
-                        return False
+                    user_college_affiliation = rows[0][1]
+                    return required_affiliations['college'] == user_college_affiliation
                 if user_perm_level in [PermissionLevel.DEPARTMENT_VIEW, PermissionLevel.DEPARTMENT_UPDATE]:
-                    if rows[0][2] in required_affiliations['department']:
-                        return True
-                    else:
-                        return False
+                    user_department_affiliation = rows[0][2]
+                    return user_department_affiliation in required_affiliations['department']
                 raise Exception("Unhandled Permission Level")
 
             return True

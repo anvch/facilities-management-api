@@ -41,7 +41,7 @@ def validate_permission(user_id, required_perm_level, required_affiliations=None
             # retrieve user permission and affiliations from DB
             cursor.execute(
                 """
-                SELECT A.permission_level,A.college_code,D.id
+                SELECT A.permission_level,A.college_code
                 FROM Accounts as A
                 WHERE username = %s;
                 """,(user_id,)
@@ -65,7 +65,7 @@ def validate_permission(user_id, required_perm_level, required_affiliations=None
                 raise Exception("Unhandled Permission Level")
 
             return True
-
+# validate_permissions helper function
 def perm_level_greater(user_perm_level, required_perm_level):
     # Array represents permission levels under the key in permission levels hierarchy
     permission_levels = {
@@ -87,6 +87,18 @@ print(validate_permission("1", PermissionLevel.GOD)) # expected False
 # -----------------------------------------------
 # DATA RETRIEVAL
 
+
+def get_floor_plans():
+    with get_connection() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute("""
+                SELECT * FROM Floors as F
+                LEFT JOIN Buildings as B  ON F.building_id = B.building_id;
+            """)
+            return cursor.fetchall()
+
+# test get_floor_plans
+print(get_floor_plans())
 # 4. Retrieve Room Information (getRoomInfo)
 def get_room_info(user_id, building_id, room_num):
     # validate permission level

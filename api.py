@@ -185,3 +185,28 @@ def get_room_info(user_id, building_id, room_num):
 
 # test get room info
 print(get_room_info("1", "002-0", "0101-00"))
+
+
+
+# 8. Equipment Locations (getEquipmentLocations) 
+
+def get_equipment_locations(equipment_name):
+    with get_connection() as conn: 
+        with conn.cursor() as cursor:
+            
+            cursor.execute("""
+                   SELECT CONCAT(r.building_id, '-' , o.room_num) AS Location, o.quantity
+                   FROM RoomEquipmentOwnerships o 
+		   JOIN Rooms r
+                       ON (o.room_num = r.room_num) AND (o.floor_num = r.floor_num)
+                   JOIN Equipment e
+	               ON o.equipment_id = e.id
+                   WHERE e.equipment_name = %s 
+            """,(equipment_name,))
+        
+            return cursor.fetchall()
+
+print(get_equipment_locations("Freezer"))
+
+
+

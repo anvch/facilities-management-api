@@ -197,7 +197,7 @@ def get_equipment_locations(equipment_name):
             cursor.execute("""
                    SELECT CONCAT(r.building_id, '-' , o.room_num) AS Location, o.quantity
                    FROM RoomEquipmentOwnerships o 
-		   JOIN Rooms r
+                   JOIN Rooms r
                        ON (o.room_num = r.room_num) AND (o.floor_num = r.floor_num)
                    JOIN Equipment e
 	               ON o.equipment_id = e.id

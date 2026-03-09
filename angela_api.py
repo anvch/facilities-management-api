@@ -1,5 +1,5 @@
 import mysql.connector
-
+from datetime import datetime
 from db import get_connection
 
 from enum import Enum
@@ -314,9 +314,14 @@ def remove_room_assignment(user_id, occupant_id, building_id, room_num):
     # TODO: add permission check
     if not validate_permission(user_id, PermissionLevel.DEPARTMENT_UPDATE):
         return Error.INVALID_PERMISSIONS
-    # TODO: call log function here to log employee removal from room
+
     conn = get_connection()
     cursor = conn.cursor()
+
+    log = log_room_assignment_person(user_id, building_id, room_num, occupant_id, "REMOVE")
+    if log is None:
+        print("ERROR: Could not create log record")
+        return # TODO: decide on appropriate error code
 
     try:
         # remove assignment
@@ -350,11 +355,26 @@ def department_assignment(user_id, department_id, building_id, room_num):
     
     conn = get_connection()
     cursor = conn.cursor()
-
-    # TODO: call log function here to log department room assignment
-
-    # Modify Rooms to have department_id match the given department
+    # modify Rooms to have department_id match the given department
     try:
+        # get previous department assignment (if any)
+        cursor.execute(
+            "SELECT department_id FROM Rooms WHERE building_id = %s AND room_num = %s",
+            (building_id, room_num)
+        )
+        row = cursor.fetchone()
+        if not row:
+            print("ERROR: Room does not exist")
+            return Error.FOREIGN_KEY_FAILURE
+        
+        prev_dept = row[0]
+
+        # create a log
+        log_result = log_room_dept_change(user_id, building_id, room_num, prev_dept, department_id)
+        if log_result is not None:
+            print("ERROR: Could not log room-department change")
+            return log_result
+
         query = """
             UPDATE Rooms
             SET department_id = %s
@@ -370,6 +390,103 @@ def department_assignment(user_id, department_id, building_id, room_num):
 
         print("Sucessfully assigned building %s, room %s to %s", building_id, room_num, department_id)
         return True
+    finally:
+        cursor.close()
+        conn.close()
+
+
+### LOGGING
+
+# 3. Room assignment to a person (logRoomAssignmentPerson)
+def log_room_assignment_person(user_id, building_id, room_num, occupant_id, action):
+    # log_id, user_email, time_altered, log_type, ro_add_or_remove, ro_occupant_id, ro_room_num, ro_floor
+    # TODO: remove floor_num fields from DB
+
+    # Validate action
+    if action not in ["ADD", "REMOVE"]:
+        raise ValueError("action must be 'ADD' or 'REMOVE'")
+
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    try:
+        # get user email from Accounts table
+        cursor.execute(
+            "SELECT email FROM Accounts WHERE username = %s",
+            (user_id,)
+        )
+        row = cursor.fetchone()
+        if not row:
+            print("ERROR: User performing action not found")
+            return None
+
+        user_email = row["email"]
+
+        # insert log
+        insert_query = """
+            INSERT INTO Logs
+            (user_email, time_altered, log_type, ro_add_or_remove, ro_occupant_id, ro_room_num, ro_building_num)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+        """
+        cursor.execute(insert_query, (
+            user_email,
+            datetime.now(),
+            "Room Occupant Assignment",
+            action,
+            occupant_id,
+            room_num,
+            building_id
+        ))
+        conn.commit()
+        return cursor.lastrowid
+
+    finally:
+        cursor.close()
+        conn.close()
+
+# 5. Change in assignment of room to department (logRoomDeptChange)
+def log_room_dept_change(user_id, building_id, room_num, prev_dept, new_dept):
+    # TODO: add permission check
+    if not validate_permission(user_id, PermissionLevel.DEPARTMENT_UPDATE):
+        return Error.INVALID_PERMISSIONS
+
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    try:
+        # get user email
+        cursor.execute("SELECT email FROM Accounts WHERE username = %s", (user_id,))
+        row = cursor.fetchone()
+        if not row:
+            return Error.FOREIGN_KEY_FAILURE  # user not found
+        user_email = row["email"]
+
+        # verify room exists
+        cursor.execute(
+            "SELECT building_id FROM Rooms WHERE building_id = %s AND room_num = %s",
+            (building_id, room_num)
+        )
+        if not cursor.fetchone():
+            return Error.FOREIGN_KEY_FAILURE  # room does not exist
+
+        # insert log record
+        insert_query = """
+            INSERT INTO Logs
+            (user_email, time_altered, log_type, rd_room_num, rd_building_num, rd_prev_department_id, rd_new_department_id)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+        """
+        cursor.execute(insert_query, (
+            user_email,
+            datetime.now(),
+            "Room Department Change",
+            room_num,
+            building_id,
+            prev_dept,
+            new_dept
+        ))
+        conn.commit()
+        return None  # success
+
     finally:
         cursor.close()
         conn.close()

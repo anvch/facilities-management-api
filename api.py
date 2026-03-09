@@ -193,6 +193,9 @@ def get_room_info(user_id, building_id, room_num):
         cursor.close()
         conn.close()
 
+
+
+
 # 8. Equipment Locations (getEquipmentLocations) 
 
 def get_equipment_locations(equipment_name):
@@ -211,13 +214,35 @@ def get_equipment_locations(equipment_name):
         
             return cursor.fetchall()
 
-<<<<<<< HEAD
- 
-print(get_equipment_locations("Freezer"))
-=======
+
+
+# 9. Sensitive Equipment Report
+
+def get_sensitive_equipment_locations(college_name):
+    with get_connection() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute("""
+                SELECT CONCAT(r.building_id,'-', r.room_num) as Location,
+                e.equipment_name, o.quantity
+                FROM RoomEquipmentOwnerships o
+                JOIN Rooms r
+                    ON (o.room_num = r.room_num) AND (o.floor_num = r.floor_num)
+                JOIN Equipment e
+                    ON o.equipment_id = e.id
+                JOIN Departments d
+                    ON r.department_id = d.id
+                JOIN Colleges c
+                    ON d.college_code = c.code
+                WHERE (c.name = %s) AND (e.is_critical = TRUE)
+                """, (college_name,))
+
+            return cursor.fetchall()
+
+
+
+
 # -----------------------------------------------
 # DATA MANIPULATION
->>>>>>> 1ce41a29df9c9bdfade05a45392ad9b77ccc3ec8
 
 # 1. Add Employee (addEmployee)
 
@@ -235,30 +260,6 @@ def add_employee(user_id,first_name, last_name, email, occupant_rank, occupant_t
             except mysql.connector.Error as e:
                 return convert_err_no(e.errno)
             return 200
-
-# 9. Sensitive Equipment Report
-
-def get_sensitive_equipment_locations(college_name): 
-    with get_connection() as conn: 
-        with conn.cursor() as cursor: 
-            cursor.execute("""
-                SELECT CONCAT(r.building_id,'-', r.room_num) as Location, 
-		e.equipment_name, o.quantity
-		FROM RoomEquipmentOwnerships o
-		JOIN Rooms r 
-		    ON (o.room_num = r.room_num) AND (o.floor_num = r.floor_num)
-		JOIN Equipment e
-		    ON o.equipment_id = e.id
-		JOIN Departments d 
-		    ON r.department_id = d.id
-		JOIN Colleges c 
-		    ON d.college_code = c.code
-		WHERE (c.name = %s) AND (e.is_critical = TRUE)
-                """, (college_name,))
-
-            return cursor.fetchall()
-
-print(get_sensitive_equipment_locations(" "))
 
 
 

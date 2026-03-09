@@ -1,6 +1,14 @@
+import mysql.connector
+
 from db import get_connection
 
 from enum import Enum
+
+class Error(Enum):
+    PRIMARY_KEY_FAILURE = 300
+    FOREIGN_KEY_FAILURE = 301
+    INVALID_PERMISSIONS = 400
+
 
 class PermissionLevel(Enum):
     GOD = "God Level"
@@ -8,6 +16,17 @@ class PermissionLevel(Enum):
     DEPARTMENT_UPDATE = "Department Update Level"
     COLLEGE_VIEW = "College View"
     COLLEGE_UPDATE = "College Update Level"
+
+class Affiliations:
+    def __init__(self, department: str | None, college: str):
+        self.department = department
+        self.college = college
+
+    def to_dict(self):
+        return {
+            "department": self.department,
+            "college": self.college
+        }
 
 def convert_perm_level_to_enum(perm_level):
     match perm_level:
@@ -76,15 +95,11 @@ def perm_level_greater(user_perm_level, required_perm_level):
     else:
         return False
 
-# test validate permissions
-print(validate_permission("1", PermissionLevel.DEPARTMENT_VIEW)) # expected True
-print(validate_permission("1", PermissionLevel.GOD)) # expected False
-
 # -----------------------------------------------
 # DATA RETRIEVAL
 
 # 1. List of Floor plans (getFloorPlans)
-def get_floor_plans():
+def get_floor_plans(user_id):
     with get_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute("""
@@ -93,11 +108,8 @@ def get_floor_plans():
             """)
             return cursor.fetchall()
 
-# test get_floor_plans
-print(get_floor_plans())
-
 # 2. List of Rooms (getRooms)
-def get_rooms(building_number,floor_number):
+def get_rooms(user_id,building_number,floor_number):
     with get_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute("""
@@ -106,24 +118,22 @@ def get_rooms(building_number,floor_number):
             """, (building_number, floor_number))
             return cursor.fetchall()
 
-print(get_rooms("002-0",1))
-
 # 3. Selected Room (findRoom)
-def find_room(building_number, floor_number, pixel_coordinates):
+def find_room(user_id,building_number, floor_number, pixel_coordinates):
     x_pixel_coordinate = pixel_coordinates[0]
     y_pixel_coordinate = pixel_coordinates[1]
     with get_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute("""
             SELECT building_id, room_num, 
-                   (bounding_top_left_y - bounding_bottom_right_y) * (bounding_bottom_right_x - bounding_top_left_x) as area
+                   ( bounding_bottom_right_y - bounding_top_left_y) * (bounding_bottom_right_x - bounding_top_left_x) as area
             FROM Rooms 
             WHERE building_id = %s AND floor_num = %s
                 AND bounding_top_left_x <= %s AND bounding_top_left_y >= %s
                 AND bounding_bottom_right_x >= %s AND bounding_bottom_right_y <= %s
                 ORDER BY area DESC
                 LIMIT 1
-            """,x_pixel_coordinate, y_pixel_coordinate, x_pixel_coordinate,y_pixel_coordinate)
+            """,(building_number,floor_number, x_pixel_coordinate, y_pixel_coordinate, x_pixel_coordinate,y_pixel_coordinate))
             return cursor.fetchall()
 # 4. Retrieve Room Information (getRoomInfo)
 def get_room_info(user_id, building_id, room_num):
@@ -183,11 +193,6 @@ def get_room_info(user_id, building_id, room_num):
         cursor.close()
         conn.close()
 
-# test get room info
-print(get_room_info("1", "002-0", "0101-00"))
-
-
-
 # 8. Equipment Locations (getEquipmentLocations) 
 
 def get_equipment_locations(equipment_name):
@@ -206,9 +211,30 @@ def get_equipment_locations(equipment_name):
         
             return cursor.fetchall()
 
+<<<<<<< HEAD
  
 print(get_equipment_locations("Freezer"))
+=======
+# -----------------------------------------------
+# DATA MANIPULATION
+>>>>>>> 1ce41a29df9c9bdfade05a45392ad9b77ccc3ec8
 
+# 1. Add Employee (addEmployee)
+
+def add_employee(user_id,first_name, last_name, email, occupant_rank, occupant_type='faculty',designation_name = None, additional_information=None):
+    if type(first_name) != str or type(last_name) != str or type(email) != str or type(occupant_rank) != str or type(occupant_type) != str:
+        raise Exception("Type error")
+    with get_connection() as conn:
+        with conn.cursor() as cursor:
+            try:
+                cursor.execute("""
+               INSERT INTO Occupants(first_name,last_name,email,occupant_rank,occupant_type)
+                VALUES (%s, %s, %s, %s, %s);
+               """,(first_name,last_name,email,occupant_rank,occupant_type))
+                conn.commit()
+            except mysql.connector.Error as e:
+                return convert_err_no(e.errno)
+            return 200
 
 # 9. Sensitive Equipment Report
 
@@ -232,5 +258,85 @@ def get_sensitive_equipment_locations(college_name):
 
             return cursor.fetchall()
 
-
 print(get_sensitive_equipment_locations(" "))
+
+
+
+
+=======
+# 2. Assign an Employee to a room (assignRoom)
+
+def assign_room(user_id, occupant_id, building_id, room_num):
+    if (type(occupant_id) != str and type(occupant_id) != int) or type(building_id) != str or type(room_num) != str:
+        raise Exception("Type error")
+    with get_connection() as conn:
+        with conn.cursor() as cursor:
+            try:
+                cursor.execute("""
+                SELECT building_id,room_num, department_id, C.code
+                FROM Rooms R LEFT JOIN Departments D ON R.department_id = D.id
+                LEFT JOIN Colleges C ON D.college_code = C.code
+                WHERE R.room_num = %s AND R.building_id = %s
+                """, (room_num, building_id))
+
+                row = cursor.fetchone()
+                if row is None:
+                    return Error.FOREIGN_KEY_FAILURE
+                required_college_affiliation = row[3]
+                validate_permission(user_id,PermissionLevel.COLLEGE_UPDATE,Affiliations(None,required_college_affiliation).to_dict())
+                cursor.execute("""
+                INSERT INTO RoomOccupancies(occupant_id,room_num,building_id)
+                    VALUES (%s, %s, %s)
+                """, (occupant_id, building_id, room_num))
+                ##TODO: Put logging here
+                # conn.commit()
+            except mysql.connector.Error as e:
+                return convert_err_no(e.errno)
+            return 200
+
+# -----------------------------------------------
+# LOGGING
+
+# 1. User Login (logLogin)
+
+def log_login(email):
+    if type(email) != str:
+        raise Exception("Type error")
+    with get_connection() as conn:
+        with conn.cursor() as cursor:
+            try:
+                cursor.execute("""
+                INSERT INTO Logs(user_email,log_type,a_is_log_in)
+                VALUES (%s, %s, %s)
+                """,(email,'ACCOUNT','TRUE'))
+                conn.commit()
+            except mysql.connector.Error as e:
+                return convert_err_no(e.errno)
+            return 200
+
+# 2. User Logout (logLogout)
+
+def log_logout(email):
+    if type(email) != str:
+        return 301
+    with get_connection() as conn:
+        with conn.cursor() as cursor:
+            try:
+                cursor.execute("""
+                               INSERT INTO Logs(user_email,log_type,a_is_log_in)
+                               VALUES (%s, %s, %s)
+                               """,(email,'ACCOUNT','FALSE'))
+                conn.commit()
+            except mysql.connector.Error as e:
+                return convert_err_no(e.errno)
+            return 200
+
+def convert_err_no(err_no):
+    if type(err_no) != int:
+        raise Exception("Type error")
+    if err_no == 23000:
+        return Error.FOREIGN_KEY_FAILURE
+    if err_no == 1062:
+        return Error.PRIMARY_KEY_FAILURE
+    return err_no
+>>>>>>> 1ce41a29df9c9bdfade05a45392ad9b77ccc3ec8

@@ -195,6 +195,77 @@ def get_room_info(user_id, building_id, room_num):
 
 
 
+# 7. Employee Info
+
+def get_employee_info(employee_input):
+    
+    with get_connection() as conn: 
+        with conn.cursor(dictionary = True) as cursor:
+	
+	    if "email" in employee_input:
+
+		cursor.execute("""
+		    SELECT id, CONCAT(first_name,' ',last_name) AS name, email, designation_name
+		    FROM Occupants
+		    WHERE email = %s
+		    """, (employee_input["email"],))
+
+	    else: 
+
+ 		cursor.execute("""
+		    SELECT o.id,CONCAT(o.first_name, ' ', o.last_name) AS name, o.email, o.designation_name, d.name AS department
+		    FROM Occupants
+		    JOIN PeopleDepartments j
+		        ON o.id = j.occupant_id
+		    JOIN Departments d 
+		        ON j.department_id = d.id
+		    WHERE (o.first_name = %s AND o.last_name = %s) AND (d.name = %s)
+		    """, (employee_input["first_name"], employee_input["last_name"],employee_input["department"],))
+
+	    employee = cursor.fetchone()
+
+	    if not employee: 
+	        return None 
+
+	    employee_id = employee["id"]
+
+# rooms associated with employee
+
+	    cursor.execute("""
+		SELECT r.building_id, r.room_num, r.floor_num, r.room_use_code, r.square_footage, c.room_use_name AS room_type
+		FROM RoomOccupancies b
+		JOIN Rooms r 
+		    ON (b.room_num = r.room_num) AND (b.floor_num = r.floor_num)
+		JOIN RoomUseCodes c 
+		    ON r.room_use_code = c.room_use_code
+		WHERE b.occupant_id = %s
+	        """, (employee_id,))
+
+	    rooms = cursor.fetchall()
+
+# add up square footage 
+            total_assigned_sqft = 0 
+
+            for room in rooms:
+		cursor.execute("""
+		    SELECT COUNT(*) AS number_of_occupants
+		    FROM RoomOccupancies
+		    WHERE (room_num = %s) AND (floor_num = %s)
+		    """,(room["room_num"], room["floor_num"]))
+
+		occupant_count = cursor.fetchone()["number_of_occupants"]
+		
+                assigned_sqft = room["square_footage"]/occupant_count
+		room["assigned_square_footage"] = assigned_sqft
+		total_assigned_sqft += assigned_sqft
+
+
+	    employee["associated_square_footage"] = total_assigned_sqft
+	    employee["rooms"] = rooms 
+
+            return employee
+
+
 
 # 8. Equipment Locations (getEquipmentLocations) 
 

@@ -204,7 +204,7 @@ def get_employee_info(employee_input):
 	
 	    if "email" in employee_input:
 
-		cursor.execute("""
+	        cursor.execute("""
 		    SELECT id, CONCAT(first_name,' ',last_name) AS name, email, designation_name
 		    FROM Occupants
 		    WHERE email = %s
@@ -212,7 +212,7 @@ def get_employee_info(employee_input):
 
 	    else: 
 
- 		cursor.execute("""
+ 	        cursor.execute("""
 		    SELECT o.id,CONCAT(o.first_name, ' ', o.last_name) AS name, o.email, o.designation_name, d.name AS department
 		    FROM Occupants
 		    JOIN PeopleDepartments j

@@ -144,7 +144,7 @@ def get_room_info(user_id, building_id, room_num):
     # TODO: make it so that department/college is checked for appropriate permissions (i.e. if they have Department level permissions, they can only see what's in their department)
     # validate permission level
     if not validate_permission(user_id, PermissionLevel.DEPARTMENT_VIEW):
-        return None
+        return Error.INVALID_PERMISSIONS
     
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
@@ -202,7 +202,7 @@ def get_room_info(user_id, building_id, room_num):
 def get_dept_list(user_id, college_code):
     # validate permission level
     if not validate_permission(user_id, PermissionLevel.DEPARTMENT_VIEW):
-        return None
+        return Error.INVALID_PERMISSIONS
     
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
@@ -231,7 +231,7 @@ def get_dept_list(user_id, college_code):
 def get_employees(user_id, college_code, department):
     # validate permission level
     if not validate_permission(user_id, PermissionLevel.DEPARTMENT_VIEW):
-        return None
+        return Error.INVALID_PERMISSIONS
     
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
@@ -305,3 +305,71 @@ def get_employees(user_id, college_code, department):
 print(get_dept_list("achen", "BCSM"))
 print(get_dept_list("achen", "CENG"))
 print(get_employees("achen", "BCSM", "Mathematics"))
+
+
+### DATA MANIPULATION API
+
+# 3. Remove Employee Assignment from a room (removeRoomAssignment)
+def remove_room_assignment(user_id, occupant_id, building_id, room_num):
+    # TODO: add permission check
+    if not validate_permission(user_id, PermissionLevel.DEPARTMENT_UPDATE):
+        return Error.INVALID_PERMISSIONS
+    # TODO: call log function here to log employee removal from room
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    try:
+        # remove assignment
+        query = """
+            DELETE FROM RoomOccupancies
+            WHERE occupant_id = %s
+              AND building_id = %s
+              AND room_num = %s
+        """
+
+        cursor.execute(query, (occupant_id, building_id, room_num))
+
+        if cursor.rowcount == 0:
+            print("ERROR: Occupant is not assigned to that room")
+            return Error.FOREIGN_KEY_FAILURE
+
+        conn.commit()
+        
+        print("Sucessfully removed occupant %s from building %s, room %s", occupant_id, building_id, room_num)
+        return True # TODO: discuss if True as success code is alright
+    finally:
+        cursor.close()
+        conn.close()
+
+
+# 4. Assign Room to Department (departmentAssignment)
+def department_assignment(user_id, department_id, building_id, room_num):
+    # TODO: add permission check
+    if not validate_permission(user_id, PermissionLevel.DEPARTMENT_UPDATE):
+        return Error.INVALID_PERMISSIONS
+    
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    # TODO: call log function here to log department room assignment
+
+    # Modify Rooms to have department_id match the given department
+    try:
+        query = """
+            UPDATE Rooms
+            SET department_id = %s
+            WHERE building_id = %s
+              AND room_num = %s
+        """
+
+        cursor.execute(query, (department_id, building_id, room_num))
+        if cursor.rowcount == 0:
+            print("ERROR: Room does not exist")
+            return Error.FOREIGN_KEY_FAILURE
+        conn.commit()
+
+        print("Sucessfully assigned building %s, room %s to %s", building_id, room_num, department_id)
+        return True
+    finally:
+        cursor.close()
+        conn.close()

@@ -247,21 +247,20 @@ def get_employee_info(employee_input):
             total_assigned_sqft = 0 
 
             for room in rooms:
-		cursor.execute("""
+                cursor.execute("""
 		    SELECT COUNT(*) AS number_of_occupants
 		    FROM RoomOccupancies
 		    WHERE (room_num = %s) AND (floor_num = %s)
 		    """,(room["room_num"], room["floor_num"]))
 
-		occupant_count = cursor.fetchone()["number_of_occupants"]
+                occupant_count = cursor.fetchone()["number_of_occupants"]
 		
                 assigned_sqft = room["square_footage"]/occupant_count
-		room["assigned_square_footage"] = assigned_sqft
-		total_assigned_sqft += assigned_sqft
+                room["assigned_square_footage"] = assigned_sqft
+                total_assigned_sqft += assigned_sqft
 
-
-	    employee["associated_square_footage"] = total_assigned_sqft
-	    employee["rooms"] = rooms 
+            employee["associated_square_footage"] = total_assigned_sqft
+            employee["rooms"] = rooms 
 
             return employee
 

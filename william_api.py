@@ -276,7 +276,7 @@ def log_room_assignment_person(user_id, building_id, room_num, occupant_id, acti
         try:
             cursor.execute(insert_query, (
                 user_email,
-                "Room Occupant Assignment",
+                "ROOM=DEPARTMENT",
                 action,
                 occupant_id,
                 room_num,
@@ -295,7 +295,7 @@ def log_room_assignment_person(user_id, building_id, room_num, occupant_id, acti
 def convert_err_no(err_no):
     if type(err_no) != int:
         raise TypeError()
-    if err_no == 23000:
+    if err_no == 23000 or err_no == 1452:
         return Error.FOREIGN_KEY_FAILURE
     if err_no == 1062:
         return Error.DUPLICATE_PRIMARY_KEY_FAILURE

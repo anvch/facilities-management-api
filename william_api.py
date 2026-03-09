@@ -79,7 +79,7 @@ def validate_permission(user_id, required_perm_level, required_affiliations=None
                     return required_affiliations['college'] == user_college_affiliation
                 if user_perm_level in [PermissionLevel.DEPARTMENT_VIEW, PermissionLevel.DEPARTMENT_UPDATE]:
                     user_department_affiliation = rows[0][2]
-                    return user_department_affiliation in required_affiliations['department']
+                    return user_department_affiliation == required_affiliations['department']
                 raise Exception("Unhandled Permission Level")
 
             return True
@@ -179,7 +179,7 @@ def assign_room(user_id, occupant_id, building_id, room_num):
         with conn.cursor() as cursor:
             try:
                 cursor.execute("""
-                               SELECT building_id,room_num, D.name, C.code
+                               SELECT building_id,room_num, D.id, C.code
                                FROM Rooms R LEFT JOIN Departments D ON R.department_id = D.id
                                             LEFT JOIN Colleges C ON D.college_code = C.code
                                WHERE R.room_num = %s AND R.building_id = %s
@@ -191,7 +191,6 @@ def assign_room(user_id, occupant_id, building_id, room_num):
 
                 required_department_affiliation = row[2]
                 required_college_affiliation = row[3]
-                {'deparmtent': 123321,'college':'BCSM'}
                 required_affiliations = Affiliations(required_department_affiliation, required_college_affiliation).to_dict()
 
                 if not validate_permission(user_id,PermissionLevel.DEPARTMENT_UPDATE,required_affiliations):

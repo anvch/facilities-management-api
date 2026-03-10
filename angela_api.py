@@ -632,7 +632,7 @@ def print_latest_log():
     cursor.execute("""
     SELECT *
     FROM Logs
-    ORDER BY log_id DESC
+    ORDER BY time_altered DESC
     LIMIT 1
     """)
 

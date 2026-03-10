@@ -63,10 +63,35 @@ print(label_result_format("Invalid Permissions (Wrong department -- Department u
 print(label_result_format("Valid permissions (College update)",remove_room_assignment('rrodriguez',8,'033-0','0151-00')))
 print_latest_log()
 sleep(1)
+
+with get_connection() as conn:
+    with conn.cursor() as cursor:
+        cursor.execute("""
+                       SELECT * FROM RoomOccupancies 
+                       WHERE occupant_id = %s
+                        AND building_id = %s
+                        AND room_num = %s
+                       """, (8,'033-0','0151-00'))
+        row = cursor.fetchone()
+        print("\n     Select statement to verify room assignment removal executing...")
+        print("     Result: ", row)
+
 # Valid permissions (Department update)
 print(label_result_format("Valid permissions (Department update)",remove_room_assignment('wliu',2,'033-0','0001-00')))
 print_latest_log()
 sleep(1)
+
+with get_connection() as conn:
+    with conn.cursor() as cursor:
+        cursor.execute("""
+                       SELECT * FROM RoomOccupancies 
+                       WHERE occupant_id = %s
+                        AND building_id = %s
+                        AND room_num = %s
+                       """, (2,'033-0','0001-00'))
+        row = cursor.fetchone()
+        print("\n     Select statement to verify room assignment removal executing...")
+        print("     Result: ", row)
 
 # 4. departmentAssignment()
 print("\n4. departmentAssignment()")
@@ -81,10 +106,34 @@ print("Both of the upcoming rooms are previously assigned to department 115100. 
 print(label_result_format("Valid permissions (College update) - Assigning 033-0-0151-00 to 15200",department_assignment('rrodriguez',115200,'033-0','0151-00')))
 print_latest_log()
 sleep(1)
+
+with get_connection() as conn:
+    with conn.cursor() as cursor:
+        cursor.execute("""
+                       SELECT * FROM Rooms
+                       WHERE building_id = %s
+                        AND room_num = %s
+                       """, ('033-0','0151-00'))
+        row = cursor.fetchone()
+        print("\n     Select statement to verify room assignment to department 15200 executing...")
+        print("     Result: ", row)
+
 # Valid permissions (Department update)
 print(label_result_format("Valid permissions (Department update) - Assigning 033-0-0001-00 to 15200",department_assignment('wliu',115200,'033-0','0001-00')))
 print_latest_log()
 sleep(1)
+
+with get_connection() as conn:
+    with conn.cursor() as cursor:
+        cursor.execute("""
+                       SELECT * FROM Rooms
+                       WHERE building_id = %s
+                        AND room_num = %s
+                       """, ('033-0','0001-00'))
+        row = cursor.fetchone()
+        print("\n     Select statement to verify room assignment to department 15200 executing...")
+        print("      Result: ", row)
+
 # Undoing the changes from testing
 print(label_result_format("Assigning 033-0-0151-00 back to 15100",department_assignment('rrodriguez',115100,'033-0','0151-00')))
 # NOTE: need to use god-level perms here because we changed the dept

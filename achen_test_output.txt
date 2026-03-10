@@ -105,27 +105,64 @@ DATA MANIPULATION
          Error.FOREIGN_KEY_FAILURE
     
 3. removeRoomAssignment() -- Department Affiliations required
-ERROR: Occupant is not assigned to that room
+
+     Add mock data: assign 033-0-0151-00 to occupant_id 8
+         200
+    
+
+     Add mock data: assign 033-0-0001-00 to occupant_id 2
+         200
+    
 
      Invalid Permissions (Wrong college -- College update)
-         Error.FOREIGN_KEY_FAILURE
+         Error.INVALID_PERMISSIONS
     
-ERROR: Occupant is not assigned to that room
 
      Invalid Permissions (Wrong department -- Department update)
-         Error.FOREIGN_KEY_FAILURE
+         Error.INVALID_PERMISSIONS
     
-ERROR: Occupant is not assigned to that room
 
      Valid permissions (College update)
-         Error.FOREIGN_KEY_FAILURE
+         200
     
-ERROR: Occupant is not assigned to that room
 
      Valid permissions (Department update)
-         Error.FOREIGN_KEY_FAILURE
+         200
     
 4. departmentAssignment()
+
+     Invalid Permissions (Wrong college -- College update)
+         Error.INVALID_PERMISSIONS
+    
+
+     Invalid Permissions (Wrong department -- Department update)
+         Error.INVALID_PERMISSIONS
+    
+Both of the upcoming rooms are previously assigned to department 115100. Testing assigning them to department 115200, then back.
+
+     Valid permissions (College update) - Assigning 033-0-0151-00 to 15200
+         200
+    
+
+     Valid permissions (Department update) - Assigning 033-0-0001-00 to 15200
+         200
+    
+
+     Assigning 033-0-0151-00 back to 15100
+         200
+    
+
+     Assigning 033-0-0001-00 back to 15100
+         200
+    
+
+     Invalid department (0)
+         Error.FOREIGN_KEY_FAILURE
+    
+
+     Invalid room (0001A-00)
+         Error.FOREIGN_KEY_FAILURE
+    
 
 ----------------------------
 LOGGING

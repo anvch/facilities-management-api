@@ -370,56 +370,88 @@ def assign_room(user_id, occupant_id, building_id, room_num):
 
 # 3. Remove Employee Assignment from a room (removeRoomAssignment)
 def remove_room_assignment(user_id, occupant_id, building_id, room_num):
-    # TODO: add permission check
-    if not validate_permission(user_id, PermissionLevel.DEPARTMENT_UPDATE):
-        return Error.INVALID_PERMISSIONS
+    if (type(occupant_id) != str and type(occupant_id) != int) or type(building_id) != str or type(room_num) != str:
+        raise TypeError()
 
     conn = get_connection()
     cursor = conn.cursor()
 
-    log = log_room_assignment_person(user_id, building_id, room_num, occupant_id, "REMOVE")
-    if log is None:
-        return Error.LOGGING_FAILURE
-
     try:
+        # validate permissions
+        cursor.execute("""
+                    SELECT building_id,room_num, D.id, C.code
+                    FROM Rooms R LEFT JOIN Departments D ON R.department_id = D.id
+                                LEFT JOIN Colleges C ON D.college_code = C.code
+                    WHERE R.room_num = %s AND R.building_id = %s
+                    """, (room_num, building_id))
+
+        row = cursor.fetchone()
+        if row is None:
+            return Error.FOREIGN_KEY_FAILURE
+
+        required_department_affiliation = row[2]
+        required_college_affiliation = row[3]
+        required_affiliations = Affiliations(required_department_affiliation, required_college_affiliation).to_dict()
+
+        if not validate_permission(user_id,PermissionLevel.DEPARTMENT_UPDATE,required_affiliations):
+            return Error.INVALID_PERMISSIONS
+        
+        # log room removal
+        log = log_room_assignment_person(user_id, building_id, room_num, occupant_id, "REMOVE")
+        if log is None:
+            return Error.LOGGING_FAILURE
+        
         # remove assignment
         query = """
             DELETE FROM RoomOccupancies
             WHERE occupant_id = %s
-              AND building_id = %s
-              AND room_num = %s
+            AND building_id = %s
+            AND room_num = %s
         """
 
         cursor.execute(query, (occupant_id, building_id, room_num))
 
         if cursor.rowcount == 0:
-            print("ERROR: Occupant is not assigned to that room")
             return Error.FOREIGN_KEY_FAILURE
 
         conn.commit()
         
-        return """
-            [SELECT FROM RoomOccupancies
-            WHERE occupant_id = %s
-              AND building_id = %s
-              AND room_num = %s]
-            should return []
-        """
-    finally:
-        cursor.close()
-        conn.close()
+    except mysql.connector.Error as e:
+        return convert_err_no(e.errno)
+ 
+    cursor.close()
+    conn.close()
+    return 200
 
 
 # 4. Assign Room to Department (departmentAssignment)
 def department_assignment(user_id, department_id, building_id, room_num):
-    # TODO: add permission check
-    if not validate_permission(user_id, PermissionLevel.DEPARTMENT_UPDATE):
-        return Error.INVALID_PERMISSIONS
-    
+    if (type(department_id) != int) or type(building_id) != str or type(room_num) != str:
+        raise TypeError()
+
     conn = get_connection()
     cursor = conn.cursor()
     # modify Rooms to have department_id match the given department
     try:
+        # validate permissions
+        cursor.execute("""
+                    SELECT building_id,room_num, D.id, C.code
+                    FROM Rooms R LEFT JOIN Departments D ON R.department_id = D.id
+                                LEFT JOIN Colleges C ON D.college_code = C.code
+                    WHERE R.room_num = %s AND R.building_id = %s
+                    """, (room_num, building_id))
+
+        row = cursor.fetchone()
+        if row is None:
+            return Error.FOREIGN_KEY_FAILURE
+
+        required_department_affiliation = row[2]
+        required_college_affiliation = row[3]
+        required_affiliations = Affiliations(required_department_affiliation, required_college_affiliation).to_dict()
+
+        if not validate_permission(user_id,PermissionLevel.DEPARTMENT_UPDATE,required_affiliations):
+            return Error.INVALID_PERMISSIONS
+        
         # get previous department assignment (if any)
         cursor.execute(
             "SELECT department_id FROM Rooms WHERE building_id = %s AND room_num = %s",
@@ -427,16 +459,14 @@ def department_assignment(user_id, department_id, building_id, room_num):
         )
         row = cursor.fetchone()
         if not row:
-            print("ERROR: Room does not exist")
             return Error.FOREIGN_KEY_FAILURE
         
         prev_dept = row[0]
 
         # create a log
         log_result = log_room_dept_change(user_id, building_id, room_num, prev_dept, department_id)
-        if log_result is not None:
-            print("ERROR: Could not log room-department change")
-            return log_result
+        if log_result != 200:
+            return Error.LOGGING_FAILURE
 
         query = """
             UPDATE Rooms
@@ -447,15 +477,14 @@ def department_assignment(user_id, department_id, building_id, room_num):
 
         cursor.execute(query, (department_id, building_id, room_num))
         if cursor.rowcount == 0:
-            print("ERROR: Room does not exist")
             return Error.FOREIGN_KEY_FAILURE
         conn.commit()
-
-        print("Sucessfully assigned building %s, room %s to %s", building_id, room_num, department_id)
-        return True
-    finally:
-        cursor.close()
-        conn.close()
+    except mysql.connector.Error as e:
+        return convert_err_no(e.errno)
+    
+    cursor.close()
+    conn.close()
+    return 200
 
 # -----------------------------------------------
 # LOGGING
@@ -544,7 +573,6 @@ def log_room_assignment_person(user_id, building_id, room_num, occupant_id, acti
 
 # 5. Change in assignment of room to department (logRoomDeptChange)
 def log_room_dept_change(user_id, building_id, room_num, prev_dept, new_dept):
-    # TODO: add permission check
     if not validate_permission(user_id, PermissionLevel.DEPARTMENT_UPDATE):
         return Error.INVALID_PERMISSIONS
 
@@ -570,12 +598,11 @@ def log_room_dept_change(user_id, building_id, room_num, prev_dept, new_dept):
         # insert log record
         insert_query = """
             INSERT INTO Logs
-            (user_email, time_altered, log_type, rd_room_num, rd_building_num, rd_prev_department_id, rd_new_department_id)
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
+            (user_email, log_type, rd_room_num, rd_building_id, rd_prev_department_id, rd_new_department_id)
+            VALUES (%s, %s, %s, %s, %s, %s)
         """
         cursor.execute(insert_query, (
             user_email,
-            datetime.now(),
             "Room Department Change",
             room_num,
             building_id,
@@ -583,7 +610,7 @@ def log_room_dept_change(user_id, building_id, room_num, prev_dept, new_dept):
             new_dept
         ))
         conn.commit()
-        return None  # success
+        return 200
 
     finally:
         cursor.close()

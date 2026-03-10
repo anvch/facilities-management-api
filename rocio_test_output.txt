@@ -1,0 +1,90 @@
+
+----------------------------
+Data Retrieval ======================
+----------------------------
+
+7. getEmployeeInfo()
+
+     a. Valid email lookup:
+         None
+    
+
+     b. Valid name lookup:
+         {'id': 1, 'first_name': 'Roberto', 'last_name': 'Abril Valenzuela', 'email': 'Roberto_Abril Valenzuela@calpoly.edu', 'occupant_rank': None, 'occupant_type': 'faculty', 'department_name': 'Physics', 'rooms': [{'building_id': '052-0', 'room_num': '0E15-00', 'square_footage': 168.97, 'assigned_sqft': 84.485}], 'assigned_sqft': 84.485}
+    
+
+     c. Invalid Permissions:
+         Error.INVALID_PERMISSIONS
+    
+
+     d. Employee not found:
+         None
+    
+8. getEquipmentLocations()
+
+     a. valid permissions, equipment exists:
+         []
+    
+
+     b. valid permissions, equipment not found:
+         []
+    
+
+     c. Invalid permissions:
+         Error.INVALID_PERMISSIONS
+    
+9. getSensitiveEquipmentLocations()
+
+     a. Valid permissions, college with sensitive equipment:
+         []
+    
+
+     c. Invalid permissions:
+         Error.INVALID_PERMISSIONS
+    
+
+     d. College does not exist:
+         Error.INVALID_PERMISSIONS
+    
+
+----------------------------
+Data Manipulation =====================
+----------------------------
+
+5. assignEquipment()
+
+     a. Valid permissions, insert equipment:
+         Error.FOREIGN_KEY_FAILURE
+    
+
+     b. Valid permissions, update equipment quantity:
+         Error.INVALID_PERMISSIONS
+    
+
+     c. Remove equipment:
+         Error.FOREIGN_KEY_FAILURE
+    
+
+     d. Invalid permissions:
+         Error.INVALID_PERMISSIONS
+    
+
+     e. Equipment does not exist:
+         Error.FOREIGN_KEY_FAILURE
+    
+Logging Test: Equipment Assignment
+Latest log after assignment
+         Latest log:  {'log_id': 33, 'user_email': 'achen@gmail.com', 'time_altered': datetime.datetime(2026, 3, 10, 17, 49, 53), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': '0001-00', 'rd_building_id': '033-0', 'rd_prev_department_id': 115200, 'rd_new_department_id': 115100, 'ro_add_or_remove': None, 'ro_occupant_id': None, 'ro_room_num': None, 'ro_building_id': None, 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+6. addEquipmentType()
+
+     a. Invalid permissions:
+         Error.INVALID_PERMISSIONS
+    
+
+     b. Valid permission:
+         Error.DUPLICATE_PRIMARY_KEY_FAILURE
+    
+
+     Verify row inserted:
+         ('SomeEquipment', 1)
+    

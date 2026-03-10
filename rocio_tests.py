@@ -28,21 +28,21 @@ print(header_string("Data Retrieval ======================"))
 # 7. getEmployeeInfo()
 print ("7. getEmployeeInfo()")
 # Valid email
-print(label_result_format("a. Valid email lookup:", get_employee_info("rrodr", {"email":"rabrilva@calpoly.edu"})))
+print(label_result_format("a. Valid email lookup:", get_employee_info("rrodriguez", {"email":"rabrilva@calpoly.edu"})))
 # Valid Name + Department
-print(label_result_format("b. Valid name lookup:", get_employee_info("rrodr", {"first_name": "Roberto", "last_name": "Abril Valenzuela", "department_id":115500})))
+print(label_result_format("b. Valid name lookup:", get_employee_info("rrodriguez", {"first_name": "Roberto", "last_name": "Abril Valenzuela", "department_id":115500})))
 # Invalid Permissions
 print(label_result_format("c. Invalid Permissions:", get_employee_info("notReal", {"email":"rabrilva@calpoly.edu"})))
 # Not Found
-print(label_result_format("d. Employee not found:", get_employee_info("rrodr", {"email": "fake@calpoly.edu"})))
+print(label_result_format("d. Employee not found:", get_employee_info("rrodriguez", {"email": "fake@calpoly.edu"})))
 
 
 # 8. getEquipmentLocations()
 print("8. getEquipmentLocations()")
 # valid permissions + equipment exists
-print(label_result_format("a. valid permissions, equipment exists:", get_equipment_locations("rrodr", 'Freezer')))
+print(label_result_format("a. valid permissions, equipment exists:", get_equipment_locations("rrodriguez", 'Freezer')))
 # valid permission but the equipment does not exist
-print(label_result_format("b. valid permissions, equipment not found:", get_equipment_locations('rrodr', 'FakeEquipment')))
+print(label_result_format("b. valid permissions, equipment not found:", get_equipment_locations('rrodriguez', 'FakeEquipment')))
 # invalid permissions
 print(label_result_format("c. Invalid permissions:", get_equipment_locations('notReal', 'Freezer')))
 
@@ -50,7 +50,7 @@ print(label_result_format("c. Invalid permissions:", get_equipment_locations('no
 # 9. getSensitiveEquipmentLocations
 print("9. getSensitiveEquipmentLocations()")
 # valid permissions + college exists
-print(label_result_format("a. Valid permissions, college with sensitive equipment:", get_sensitive_equipment_locations('rrodr', 'College of Engineering')))
+print(label_result_format("a. Valid permissions, college with sensitive equipment:", get_sensitive_equipment_locations('rrodriguez', 'College of Engineering')))
 # invalid permissions
 print(label_result_format("c. Invalid permissions:", get_sensitive_equipment_locations('notReal', 'College of Engineering')))
 # college does not exist
@@ -63,15 +63,15 @@ print(header_string("Data Manipulation ====================="))
 # 5. assignEquipment()
 print("5. assignEquipment()")
 # insert new equipment into a room
-print(label_result_format("a. Valid permissions, insert equipment:", assign_equipment('rrodr', 53, '0210-00', 'Freezer', 2)))
+print(label_result_format("a. Valid permissions, insert equipment:", assign_equipment('rrodriguez', 53, '0210-00', 'Freezer', 2)))
 # update equipment quantity
 print(label_result_format("b. Valid permissions, update equipment quantity:", assign_equipment('rrodr', 53, '0210-00', 'Freezer', 5)))
 # remove equipment (new count = 0)
-print(label_result_format("c. Remove equipment:", assign_equipment('rrodr', 53, '0210-00', 'Freezer', 0)))
+print(label_result_format("c. Remove equipment:", assign_equipment('rrodriguez', 53, '0210-00', 'Freezer', 0)))
 # invalid permissions
 print(label_result_format("d. Invalid permissions:",assign_equipment('notReal', 53, '0220-00', 'Freezer', 2)))
 # equipment does not exist
-print(label_result_format("e. Equipment does not exist:",assign_equipment('rrodr', 53, '0210-00', 'FakeEquipment', 2)))
+print(label_result_format("e. Equipment does not exist:",assign_equipment('rrodriguez', 53, '0210-00', 'FakeEquipment', 2)))
 
 # Logging 4 - logEquipmentAssignment
 print("Logging Test: Equipment Assignment")

@@ -149,11 +149,10 @@ def get_employee_info(user_id, employee_input):
 
             # get rooms the employee occupies
             cursor.execute("""
-            SELECT r.building_id, r.floor_num, r.room_num, r.square_footage
+            SELECT r.building_id, r.room_num, r.square_footage
             FROM Rooms r 
             JOIN RoomOccupancies ro 
             ON r.room_num = ro.room_num 
-              AND r.floor_num = ro.floor_num 
               AND r.building_id = ro.building_id
             WHERE ro.occupant_id = %s
             """, (employee_id,))
@@ -168,9 +167,8 @@ def get_employee_info(user_id, employee_input):
                 SELECT COUNT(*) as occupant_count 
                 FROM RoomOccupancies
                 WHERE room_num = %s
-                     AND floor_num = %s
                      AND building_id = %s
-                """, (room["room_num"], room["floor_num"], room["building_id"]))
+                """, (room["room_num"], room["building_id"]))
 
                 occupant_count = cursor.fetchone()["occupant_count"]
                 sqft_per_person = room["square_footage"] / occupant_count
@@ -199,7 +197,7 @@ def get_equipment_locations(user_id, equipment_name):
             SELECT r.building_id, r.room_num, o.quantity AS equipment_count
             FROM RoomEquipmentOwnerships o 
             JOIN Rooms r 
-            ON o.room_num = r.room_num AND o.floor_num = r.floor_num 
+            ON o.room_num = r.room_num AND o.building_id = r.building_id
             JOIN Equipment e
             ON o.equipment_id = e.id
             WHERE e.equipment_name = %s 
@@ -209,7 +207,7 @@ def get_equipment_locations(user_id, equipment_name):
 
 
 # 9. Sensitive Equipment Report
-def get_sensitive_equipment_locations(user_id, college_name):
+def get_sensitive_equipment_locations(user_id, college_code):
 
     if not validate_permission(user_id, PermissionLevel.DEPARTMENT_VIEW):
         return Error.INVALID_PERMISSIONS
@@ -218,19 +216,19 @@ def get_sensitive_equipment_locations(user_id, college_name):
         with conn.cursor(dictionary = True) as cursor:
 
             cursor.execute("""
-            SELECT DISTINCT r.building_id, r.room_num, r.floor_num
+            SELECT DISTINCT r.building_id, r.room_num
             FROM Rooms r
             JOIN RoomEquipmentOwnerships o
-            ON o.room_num = r.room_num AND o.floor_num = r.floor_num 
+            ON o.room_num = r.room_num AND o.building_id = r.building_id 
             JOIN Equipment e
             ON o.equipment_id = e.id
             JOIN Departments d 
             ON r.department_id = d.id
             JOIN Colleges c
             ON d.college_code = c.code
-            WHERE c.college_name = %s
+            WHERE c.code = %s
             AND e.is_critical = TRUE
-            """, (college_name,))
+            """, (college_code,))
 
             rooms = cursor.fetchall()
 
@@ -240,8 +238,8 @@ def get_sensitive_equipment_locations(user_id, college_name):
                 FROM RoomEquipmentOwnerships o 
                 JOIN Equipment e
                 ON o.equipment_id = e.id 
-                WHERE (o.room_num = %s AND o.floor_num = %s) AND (e.is_critical = TRUE)
-                """, (room["room_num"], room["floor_num"]))
+                WHERE (o.room_num = %s AND o.building_id = %s) AND (e.is_critical = TRUE)
+                """, (room["room_num"], room["building_id"]))
 
                 equipment = cursor.fetchall()
 
@@ -280,27 +278,15 @@ def assign_equipment(user_id, building_id, room_num, equipment_name, new_count):
 
                 equipment_id = eq_results["id"]
 
-                # floor number for room
-                cursor.execute("""
-                SELECT floor_num
-                FROM Rooms 
-                WHERE building_id = %s AND room_num = %s
-                """, (building_id, room_num))
-
-                result = cursor.fetchone()
-                if not result:
-                    return Error.FOREIGN_KEY_FAILURE
-
-                floor_num = result["floor_num"]
 
                 # does room already have this equipment?
                 cursor.execute("""
                 SELECT quantity
                 FROM RoomEquipmentOwnerships 
                 WHERE room_num = %s
-                AND floor_num = %s
+                AND building_id = %s
                 AND equipment_id = %s
-                """, (room_num, floor_num, equipment_id))
+                """, (room_num, building_id, equipment_id))
 
                 quantity_result = cursor.fetchone()
                 old_count = quantity_result["quantity"] if quantity_result else 0
@@ -311,9 +297,9 @@ def assign_equipment(user_id, building_id, room_num, equipment_name, new_count):
                     cursor.execute("""
                     DELETE FROM RoomEquipmentOwnerships 
                     WHERE room_num = %s
-                    AND floor_num = %s
+                    AND building_id = %s
                     AND equipment_id = %s
-                    """, (room_num, floor_num, equipment_id))
+                    """, (room_num, building_id, equipment_id))
 
                 # Update Existing Quantity
                 elif quantity_result and new_count != old_count:
@@ -321,15 +307,15 @@ def assign_equipment(user_id, building_id, room_num, equipment_name, new_count):
                     UPDATE RoomEquipmentOwnerships 
                     SET quantity = %s
                     WHERE room_num = %s
-                    AND floor_num = %s 
+                    AND building_id = %s 
                     AND equipment_id = %s
-                    """, (new_count, room_num, floor_num, equipment_id))
+                    """, (new_count, room_num, building_id, equipment_id))
 
                 # Insert New Equipment Assignment
                 elif new_count > 0:
                     cursor.execute("""
-                    INSERT INTO RoomEquipmentOwnerships(room_num, floor_num, equipment_id, quantity) VALUES( %s, %s, %s, %s)
-                    """, (room_num, floor_num, equipment_id, new_count))
+                    INSERT INTO RoomEquipmentOwnerships(room_num, building_id, equipment_id, quantity) VALUES( %s, %s, %s, %s)
+                    """, (room_num, building_id, equipment_id, new_count))
 
                 log_status = log_equipment_assignment(user_id, building_id, room_num, equipment_name, old_count, new_count)
 
@@ -381,16 +367,16 @@ def log_equipment_assignment(user_id, building_id, room_num, equipment_name, bef
     with get_connection() as conn:
         with conn.cursor(dictionary = True) as cursor:
 
-            cursor.execute("""
-            SELECT floor_num 
-            FROM Rooms 
-            WHERE building_id = %s AND room_num = %s
-            """, (building_id, room_num))
+            # cursor.execute("""
+            # SELECT floor_num 
+            # FROM Rooms 
+            # WHERE building_id = %s AND room_num = %s
+            # """, (building_id, room_num))
 
-            room = cursor.fetchone()
+            # room = cursor.fetchone()
 
-            if not room:
-                return Error.FOREIGN_KEY_FAILURE
+            # if not room:
+            #     return Error.FOREIGN_KEY_FAILURE
 
 
             cursor.execute("""
@@ -417,9 +403,9 @@ def log_equipment_assignment(user_id, building_id, room_num, equipment_name, bef
 
             try:
                 cursor.execute("""
-                INSERT INTO Logs( user_email, log_type, e_room_num, e_floor_num, e_equipment_id, e_old_quantity, e_new_quantity) 
+                INSERT INTO Logs( user_email, log_type, e_room_num, e_building_id, e_equipment_id, e_old_quantity, e_new_quantity) 
                 VALUES (%s, %s, %s, %s, %s, %s, %s)
-                """,(user_email,'EQUIPMENT' , room_num, equipment_id, before, after))
+                """,(user_email,'EQUIPMENT', building_id, equipment_id, before, after))
 
                 conn.commit()
 

@@ -23,7 +23,7 @@ DATA RETRIEVAL
     
 
      Invalid department code (ABCD)
-         []
+         Error.NOT_FOUND
     
 6. getEmployees()
 
@@ -64,12 +64,12 @@ DATA MANIPULATION
      Valid permissions (College update)
          200
     
-     Latest log:  {'log_id': 45, 'user_email': 'rrodriguez@gmail.com', 'time_altered': None, 'log_type': 'ROOM=OCCUPANT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 8, 'ro_room_num': '0151-00', 'ro_building_id': '033-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+     Latest log:  {'log_id': 54, 'user_email': 'rrodriguez@gmail.com', 'time_altered': None, 'log_type': 'ROOM=OCCUPANT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 8, 'ro_room_num': '0151-00', 'ro_building_id': '033-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
 
      Valid permissions (Department update)
          200
     
-     Latest log:  {'log_id': 46, 'user_email': 'wliu@gmail.com', 'time_altered': None, 'log_type': 'ROOM=OCCUPANT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 2, 'ro_room_num': '0001-00', 'ro_building_id': '033-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+     Latest log:  {'log_id': 55, 'user_email': 'wliu@gmail.com', 'time_altered': None, 'log_type': 'ROOM=OCCUPANT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 2, 'ro_room_num': '0001-00', 'ro_building_id': '033-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
 
 4. departmentAssignment()
 
@@ -93,12 +93,12 @@ Both of the upcoming rooms are previously assigned to department 115100. Testing
      Valid permissions (College update) - Assigning 033-0-0151-00 to 15200
          200
     
-     Latest log:  {'log_id': 48, 'user_email': 'rrodriguez@gmail.com', 'time_altered': None, 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': '0151-00', 'rd_building_id': '033-0', 'rd_prev_department_id': 115100, 'rd_new_department_id': 115200, 'ro_add_or_remove': None, 'ro_occupant_id': None, 'ro_room_num': None, 'ro_building_id': None, 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+     Latest log:  {'log_id': 57, 'user_email': 'rrodriguez@gmail.com', 'time_altered': None, 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': '0151-00', 'rd_building_id': '033-0', 'rd_prev_department_id': 115100, 'rd_new_department_id': 115200, 'ro_add_or_remove': None, 'ro_occupant_id': None, 'ro_room_num': None, 'ro_building_id': None, 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
 
      Valid permissions (Department update) - Assigning 033-0-0001-00 to 15200
          200
     
-     Latest log:  {'log_id': 49, 'user_email': 'wliu@gmail.com', 'time_altered': None, 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': '0001-00', 'rd_building_id': '033-0', 'rd_prev_department_id': 115100, 'rd_new_department_id': 115200, 'ro_add_or_remove': None, 'ro_occupant_id': None, 'ro_room_num': None, 'ro_building_id': None, 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+     Latest log:  {'log_id': 58, 'user_email': 'wliu@gmail.com', 'time_altered': None, 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': '0001-00', 'rd_building_id': '033-0', 'rd_prev_department_id': 115100, 'rd_new_department_id': 115200, 'ro_add_or_remove': None, 'ro_occupant_id': None, 'ro_room_num': None, 'ro_building_id': None, 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
 
      Assigning 033-0-0151-00 back to 15100
          200

@@ -228,6 +228,8 @@ def get_dept_list(user_id, college_code):
 
         # TODO: add other department information (not in our current data)
         dept_names = [dept["name"] for dept in departments]
+        if len(dept_names) == 0:
+            return Error.NOT_FOUND
         return dept_names
 
     finally:

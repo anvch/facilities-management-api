@@ -542,8 +542,7 @@ def log_room_assignment_person(user_id, building_id, room_num, occupant_id, acti
         )
         row = cursor.fetchone()
         if not row:
-            print("ERROR: User performing action not found")
-            return None
+            return Error.FOREIGN_KEY_FAILURE
 
         user_email = row["email"]
 
@@ -556,7 +555,7 @@ def log_room_assignment_person(user_id, building_id, room_num, occupant_id, acti
         try:
             cursor.execute(insert_query, (
                 user_email,
-                "ROOM=DEPARTMENT",
+                'ROOM=OCCUPANT',
                 action,
                 occupant_id,
                 room_num,
@@ -603,7 +602,7 @@ def log_room_dept_change(user_id, building_id, room_num, prev_dept, new_dept):
         """
         cursor.execute(insert_query, (
             user_email,
-            "Room Department Change",
+            'ROOM=DEPARTMENT',
             room_num,
             building_id,
             prev_dept,
@@ -624,3 +623,23 @@ def convert_err_no(err_no):
     if err_no == 1062:
         return Error.DUPLICATE_PRIMARY_KEY_FAILURE
     return err_no
+
+def print_latest_log():
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("""
+    SELECT *
+    FROM Logs
+    ORDER BY log_id DESC
+    LIMIT 1
+    """)
+
+    row = cursor.fetchone()
+
+    if row:
+        print("     Latest log: ", row)
+    else:
+        print("No logs found")
+
+    cursor.close()
+    conn.close()

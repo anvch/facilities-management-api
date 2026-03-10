@@ -220,7 +220,7 @@ def log_login(email):
                 cursor.execute("""
                                INSERT INTO Logs(user_email,log_type,a_is_log_in)
                                VALUES (%s, %s, %s)
-                               """,(email,'ACCOUNT','TRUE'))
+                               """,(email,'ACCOUNT','1'))
                 conn.commit()
             except mysql.connector.Error as e:
                 return convert_err_no(e.errno)
@@ -237,7 +237,7 @@ def log_logout(email):
                 cursor.execute("""
                                INSERT INTO Logs(user_email,log_type,a_is_log_in)
                                VALUES (%s, %s, %s)
-                               """,(email,'ACCOUNT','FALSE'))
+                               """,(email,'ACCOUNT','0'))
                 conn.commit()
             except mysql.connector.Error as e:
                 return convert_err_no(e.errno)
@@ -300,3 +300,23 @@ def convert_err_no(err_no):
     if err_no == 1062:
         return Error.DUPLICATE_PRIMARY_KEY_FAILURE
     return err_no
+
+def print_latest_log():
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("""
+                   SELECT *
+                   FROM Logs
+                   ORDER BY log_id DESC
+                   LIMIT 1
+                   """)
+
+    row = cursor.fetchone()
+
+    if row:
+        print("         Latest log: ", row)
+    else:
+        print("No logs found")
+
+    cursor.close()
+    conn.close()

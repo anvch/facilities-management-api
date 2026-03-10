@@ -45,11 +45,8 @@ DATA MANIPULATION
          Error.INVALID_PERMISSIONS
     
 
-     Removed jsmith@calpoly.edu from Occupants
-
-
      c. Valid permission (God Level)
-         200
+         New Row: (604, 'John', 'Smith', 'jsmith@calpoly.edu')
     
 
      d. Valid permission but employee already exists
@@ -66,15 +63,17 @@ DATA MANIPULATION
     
 
      c. Valid permissions (College update)
-         200
+         New Row: ('0220-00', '053-0', 604, None)
     
+         Latest log:  {'log_id': 37, 'user_email': 'rrodriguez@gmail.com', 'time_altered': None, 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'ADD', 'ro_occupant_id': 604, 'ro_room_num': '0220-00', 'ro_building_id': '053-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
 
      Reverted room assignment
 
 
      d. Valid permissions (Department update)
-         200
+         New Row: ('0220-00', '053-0', 604, None)
     
+         Latest log:  {'log_id': 38, 'user_email': 'wliu@gmail.com', 'time_altered': None, 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'ADD', 'ro_occupant_id': 604, 'ro_room_num': '0220-00', 'ro_building_id': '053-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
 
 ----------------------------
 LOGGING
@@ -85,6 +84,7 @@ LOGGING
      a. Valid permissions (having an account):
          200
     
+         Latest log:  {'log_id': 39, 'user_email': 'wliu@gmail.com', 'time_altered': None, 'log_type': 'ACCOUNT', 'a_is_log_in': 1, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': None, 'ro_occupant_id': None, 'ro_room_num': None, 'ro_building_id': None, 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
 
      b. Invalid permissions:
          Error.FOREIGN_KEY_FAILURE
@@ -94,6 +94,7 @@ LOGGING
      a. Valid permissions (having an account):
          200
     
+         Latest log:  {'log_id': 41, 'user_email': 'achen@gmail.com', 'time_altered': None, 'log_type': 'ACCOUNT', 'a_is_log_in': 0, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': None, 'ro_occupant_id': None, 'ro_room_num': None, 'ro_building_id': None, 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
 
      b. Invalid permissions:
          Error.FOREIGN_KEY_FAILURE

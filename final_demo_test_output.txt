@@ -1,0 +1,658 @@
+
+----------------------------
+DATA RETRIEVAL
+----------------------------
+
+1. List of Departments
+
+     a. BCSM
+         Liberal Studies,
+         Biological Sciences,
+         Chemistry & Biochemistry,
+         Statistics,
+         Mathematics,
+         Physics,
+         Kinesiology & Public Hlth,
+         College General Use,
+         Advising Center,
+         Deans Office,
+         Computing Support Services,
+         Advancement,
+         Cntr for Cstal Marine Sci,
+         Health Professions,
+         Ctr Sci,
+         Math Science Teacher Int,
+         LSAMP,
+         STAR,
+         Design & Fabrication Fácil,
+         School of Education,
+         Unknown Department
+2. List of FloorPlans (image_path, building_id, floor_num, building_name)
+
+     a. All floor plans
+         ('building-053-0_science-north_1.svg', '053-0', 1, 'Science North'),
+         ('building-053-0_science-north_2.svg', '053-0', 2, 'Science North'),
+         ('building033floor4.png', '033-0', 3, 'Clyde P. Fisher Science Hall')
+3. List of Rooms (building_id, room_num, 4 bounding fields, department_id)
+
+     a. Rooms in Building 53, floor 2
+         ('053-0', '0203-00', 339, 403, 388, 484, 115500),
+         ('053-0', '0205-00', 317, 444, 338, 483, 117501),
+         ('053-0', '0210-00', 224, 520, 296, 550, 115100),
+         ('053-0', '0210-A0', 267, 472, 295, 499, 117501),
+         ('053-0', '0210-B0', 268, 500, 295, 524, 117501),
+         ('053-0', '0210-C0', 268, 524, 296, 550, 117501),
+         ('053-0', '0210-D0', 256, 534, 267, 550, 117501),
+         ('053-0', '0210-E0', 224, 520, 257, 550, 117501),
+         ('053-0', '0210-F0', 223, 489, 257, 520, 117501),
+         ('053-0', '0210-G0', 224, 462, 256, 488, 117501),
+         ('053-0', '0211-00', 255, 414, 296, 460, 117501),
+         ('053-0', '0211-A0', 224, 441, 256, 462, 117501),
+         ('053-0', '0211-B0', 224, 414, 255, 440, 117501),
+         ('053-0', '0212-00', 224, 391, 295, 413, 115100),
+         ('053-0', '0216-00', 307, 241, 318, 273, 117501),
+         ('053-0', '0217-00', 337, 212, 351, 228, 115100),
+         ('053-0', '0218-00', 352, 211, 387, 238, 115100),
+         ('053-0', '0219-00', 351, 239, 389, 266, 115100),
+         ('053-0', '0220-00', 352, 266, 388, 292, 115100)
+4. Room Selection (building_id, room_num)
+
+     a. Building 53 floor 2, Room 203 | Pixel coordinate 340,404
+         ('053-0', '0203-00')
+
+     b. Building 53 floor 2, Room 210G | Pixel coordinate 225,463
+         ('053-0', '0210-G0')
+
+     b. Building 53 floor 2 | Pixel coordinate 0,0
+         
+
+     b. Building 2 floor 1 | Pixel coordinate 0,0
+         
+5. List of Employees 
+
+     Admin account | Math department
+         {
+             'occupant_id': 26,
+             'full_name': 'Rebecca Bishop',
+             'email': 'Rebecca_Bishop@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0325-00',
+             'total_square_footage': 92.96
+         },
+
+         {
+             'occupant_id': 34,
+             'full_name': 'Vincent Bonini',
+             'email': 'Vincent_Bonini@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0305-00',
+             'total_square_footage': 107.65
+         },
+
+         {
+             'occupant_id': 45,
+             'full_name': 'Eric Brussel',
+             'email': 'Eric_Brussel@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0300-00',
+             'total_square_footage': 101.64
+         },
+
+         {
+             'occupant_id': 50,
+             'full_name': 'Charles Camp',
+             'email': 'Charles_Camp@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0309-00',
+             'total_square_footage': 98.67
+         },
+
+         {
+             'occupant_id': 60,
+             'full_name': 'Danielle Champney',
+             'email': 'Danielle_Champney@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0336-00',
+             'total_square_footage': 115.83
+         },
+
+         {
+             'occupant_id': 65,
+             'full_name': 'Haoyan Chi',
+             'email': 'Haoyan_Chi@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0315-00',
+             'total_square_footage': 95.27
+         },
+
+         {
+             'occupant_id': 67,
+             'full_name': 'Paul Choboter',
+             'email': 'Paul_Choboter@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0313-00',
+             'total_square_footage': 95.34
+         },
+
+         {
+             'occupant_id': 68,
+             'full_name': 'Austin Christian',
+             'email': 'Austin_Christian@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0338-00',
+             'total_square_footage': 98.33
+         },
+
+         {
+             'occupant_id': 82,
+             'full_name': 'James Crew',
+             'email': 'James_Crew@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': None,
+             'total_square_footage': None
+         },
+
+         {
+             'occupant_id': 85,
+             'full_name': 'Montserrat Dabkowski',
+             'email': 'Montserrat_Dabkowski@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0209-00',
+             'total_square_footage': 98.67
+         },
+
+         {
+             'occupant_id': 99,
+             'full_name': 'Elena Dimitrova',
+             'email': 'Elena_Dimitrova@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0342-00',
+             'total_square_footage': 114.37
+         },
+
+         {
+             'occupant_id': 105,
+             'full_name': 'Robert Easton',
+             'email': 'Robert_Easton@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0320-00',
+             'total_square_footage': 100.58
+         },
+
+         {
+             'occupant_id': 113,
+             'full_name': 'Jason Elwood',
+             'email': 'Jason_Elwood@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0206-00',
+             'total_square_footage': 107.65
+         },
+
+         {
+             'occupant_id': 136,
+             'full_name': 'Cameron Fredrickson',
+             'email': 'Cameron_Fredrickson@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': None,
+             'total_square_footage': None
+         },
+
+         {
+             'occupant_id': 141,
+             'full_name': 'Sean Gasiorek',
+             'email': 'Sean_Gasiorek@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0323-00',
+             'total_square_footage': 105.15
+         },
+
+         {
+             'occupant_id': 143,
+             'full_name': 'Saba Gerami',
+             'email': 'Saba_Gerami@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0302-00',
+             'total_square_footage': 107.66
+         },
+
+         {
+             'occupant_id': 144,
+             'full_name': 'Jeffrey Gervasi',
+             'email': 'Jeffrey_Gervasi@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': None,
+             'total_square_footage': None
+         },
+
+         {
+             'occupant_id': 153,
+             'full_name': 'McFeely Goodman',
+             'email': 'McFeely_Goodman@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0319-00',
+             'total_square_footage': 91.29
+         },
+
+         {
+             'occupant_id': 162,
+             'full_name': 'Todd Grundmeier',
+             'email': 'Todd_Grundmeier@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0205-00',
+             'total_square_footage': 107.65
+         },
+
+         {
+             'occupant_id': 163,
+             'full_name': 'Caixing Gu',
+             'email': 'Caixing_Gu@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0328-00',
+             'total_square_footage': 93.74
+         },
+
+         {
+             'occupant_id': 171,
+             'full_name': 'Clint Hahlbeck',
+             'email': 'Clint_Hahlbeck@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0208-F0',
+             'total_square_footage': 117.6
+         },
+
+         {
+             'occupant_id': 175,
+             'full_name': 'Emily Hamilton',
+             'email': 'Emily_Hamilton@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0337-00',
+             'total_square_footage': 98.3
+         },
+
+         {
+             'occupant_id': 181,
+             'full_name': 'William Hesselgrave',
+             'email': 'William_Hesselgrave@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0335-00',
+             'total_square_footage': 107.04
+         },
+
+         {
+             'occupant_id': 186,
+             'full_name': 'Charlie Hogue',
+             'email': 'Charlie_Hogue@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': None,
+             'total_square_footage': None
+         },
+
+         {
+             'occupant_id': 201,
+             'full_name': 'Bryce Jenkin',
+             'email': 'Bryce_Jenkin@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0332-00',
+             'total_square_footage': 98.01
+         },
+
+         {
+             'occupant_id': 213,
+             'full_name': 'Anton Kaul',
+             'email': 'Anton_Kaul@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0312-00',
+             'total_square_footage': 90.1
+         },
+
+         {
+             'occupant_id': 218,
+             'full_name': 'Colleen Kirk',
+             'email': 'Colleen_Kirk@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0316-00',
+             'total_square_footage': 83.76
+         },
+
+         {
+             'occupant_id': 235,
+             'full_name': 'Jeffrey Liese',
+             'email': 'Jeffrey_Liese@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0306-00',
+             'total_square_footage': 107.65
+         },
+
+         {
+             'occupant_id': 236,
+             'full_name': 'Joyce Lin',
+             'email': 'Joyce_Lin@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0225-00',
+             'total_square_footage': 93.5
+         },
+
+         {
+             'occupant_id': 237,
+             'full_name': 'Charlie Liou',
+             'email': 'Charlie_Liou@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': None,
+             'total_square_footage': None
+         },
+
+         {
+             'occupant_id': 242,
+             'full_name': 'Robert Lopez',
+             'email': 'Robert_Lopez@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0204-00',
+             'total_square_footage': 102.36
+         },
+
+         {
+             'occupant_id': 260,
+             'full_name': 'Mitchell McDuff',
+             'email': 'Mitchell_McDuff@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0200-00',
+             'total_square_footage': 50.82
+         },
+
+         {
+             'occupant_id': 264,
+             'full_name': 'Elsa Medina',
+             'email': 'Elsa_Medina@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0303-00',
+             'total_square_footage': 112.95
+         },
+
+         {
+             'occupant_id': 265,
+             'full_name': 'Anthony Mendes',
+             'email': 'Anthony_Mendes@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0202-00',
+             'total_square_footage': 107.66
+         },
+
+         {
+             'occupant_id': 270,
+             'full_name': 'Michael Miller',
+             'email': 'Michael_Miller@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0330-00',
+             'total_square_footage': 82.12
+         },
+
+         {
+             'occupant_id': 289,
+             'full_name': 'Zoe Nepsa',
+             'email': 'Zoe_Nepsa@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0200-00',
+             'total_square_footage': 50.82
+         },
+
+         {
+             'occupant_id': 292,
+             'full_name': 'Soinbhe Nic Dhonncha',
+             'email': 'Soinbhe_Nic Dhonncha@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': None,
+             'total_square_footage': None
+         },
+
+         {
+             'occupant_id': 295,
+             'full_name': "Mason O'Leary",
+             'email': "Mason_O'Leary@calpoly.edu",
+             'occupant_rank': None,
+             'rooms': '025-0-0210-00',
+             'total_square_footage': 47.72
+         },
+
+         {
+             'occupant_id': 302,
+             'full_name': 'Patrick Orson',
+             'email': 'Patrick_Orson@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0301-00',
+             'total_square_footage': 107.67
+         },
+
+         {
+             'occupant_id': 306,
+             'full_name': 'Bella Padavana',
+             'email': 'Bella_Padavana@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': None,
+             'total_square_footage': None
+         },
+
+         {
+             'occupant_id': 309,
+             'full_name': 'Dana Paquin',
+             'email': 'Dana_Paquin@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0327-00',
+             'total_square_footage': 93.5
+         },
+
+         {
+             'occupant_id': 313,
+             'full_name': 'Erin Pearse',
+             'email': 'Erin_Pearse@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0341-00',
+             'total_square_footage': 114.34
+         },
+
+         {
+             'occupant_id': 331,
+             'full_name': 'Dylan Retsek',
+             'email': 'Dylan_Retsek@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0314-00',
+             'total_square_footage': 95.3
+         },
+
+         {
+             'occupant_id': 335,
+             'full_name': 'Benjamin Richert',
+             'email': 'Benjamin_Richert@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0208-DC',
+             'total_square_footage': 194.67
+         },
+
+         {
+             'occupant_id': 336,
+             'full_name': 'Kate Riley',
+             'email': 'Kate_Riley@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0304-00',
+             'total_square_footage': 102.36
+         },
+
+         {
+             'occupant_id': 340,
+             'full_name': 'Mike Robertson',
+             'email': 'Mike_Robertson@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0331-00',
+             'total_square_footage': 131.68
+         },
+
+         {
+             'occupant_id': 351,
+             'full_name': 'Alex Ruys De Perez',
+             'email': 'Alex_Ruys De Perez@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '181-0-0307-00',
+             'total_square_footage': 75.21
+         },
+
+         {
+             'occupant_id': 365,
+             'full_name': 'Amelie Schinck-Mikel',
+             'email': 'Amelie_Schinck-Mikel@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0324-00',
+             'total_square_footage': 92.65
+         },
+
+         {
+             'occupant_id': 367,
+             'full_name': 'Sonja Schuster',
+             'email': 'Sonja_Schuster@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': None,
+             'total_square_footage': None
+         },
+
+         {
+             'occupant_id': 374,
+             'full_name': 'Jonathan Shapiro',
+             'email': 'Jonathan_Shapiro@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0308-00',
+             'total_square_footage': 130.45
+         },
+
+         {
+             'occupant_id': 376,
+             'full_name': 'Morgan Sherman',
+             'email': 'Morgan_Sherman@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0329-00',
+             'total_square_footage': 93.96
+         },
+
+         {
+             'occupant_id': 389,
+             'full_name': 'Mark Stankus',
+             'email': 'Mark_Stankus@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0311-00',
+             'total_square_footage': 100.68
+         },
+
+         {
+             'occupant_id': 395,
+             'full_name': 'Ciera Street',
+             'email': 'Ciera_Street@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0326-00',
+             'total_square_footage': 93.24
+         },
+
+         {
+             'occupant_id': 397,
+             'full_name': 'Melissa Sunata',
+             'email': 'Melissa_Sunata@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0208-DB',
+             'total_square_footage': 119.61
+         },
+
+         {
+             'occupant_id': 398,
+             'full_name': 'Lawrence Sze',
+             'email': 'Lawrence_Sze@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0307-00',
+             'total_square_footage': 108.24
+         },
+
+         {
+             'occupant_id': 406,
+             'full_name': 'Lori Thomas-Hicks',
+             'email': 'Lori_Thomas-Hicks@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': None,
+             'total_square_footage': None
+         },
+
+         {
+             'occupant_id': 416,
+             'full_name': 'Ryan Tully-Doyle',
+             'email': 'Ryan_Tully-Doyle@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0310-00',
+             'total_square_footage': 95.44
+         },
+
+         {
+             'occupant_id': 417,
+             'full_name': 'Brian Tyrrell-Nic Dhonncha',
+             'email': 'Brian_Tyrrell-Nic Dhonncha@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': None,
+             'total_square_footage': None
+         },
+
+         {
+             'occupant_id': 427,
+             'full_name': 'Kathryn Voltmer',
+             'email': 'Kathryn_Voltmer@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0210-00',
+             'total_square_footage': 47.72
+         },
+
+         {
+             'occupant_id': 438,
+             'full_name': 'Terrin Warren',
+             'email': 'Terrin_Warren@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '181-0-0307-00',
+             'total_square_footage': 75.21
+         },
+
+         {
+             'occupant_id': 439,
+             'full_name': 'Sean Watson',
+             'email': 'Sean_Watson@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0334-00',
+             'total_square_footage': 107.02
+         },
+
+         {
+             'occupant_id': 455,
+             'full_name': 'Fan Yang',
+             'email': 'Fan_Yang@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '025-0-0333-00',
+             'total_square_footage': 107.0
+         }
+9. Addition of an Employee - adding users to Bio Sci
+
+     a. College View Role, BCSM
+         Error.INVALID_PERMISSIONS
+
+     b. Department Update Role, Chem dept
+         Error.INVALID_PERMISSIONS
+
+     c. Department Update Role, Bio Sci dept
+         200
+         New Occupant Row: ('jane', 'doe', 'janedoe1@gmail.com')
+         New PeopleDepartments Row: ('janedoe1@gmail.com', 115100, 'Biological Sciences')
+     -- Removed Jane Doe from database --
+
+     d. College Update Role, BCSM
+         200
+         New Occupant Row: ('jane', 'doe', 'janedoe1@gmail.com')
+         New PeopleDepartments Row: ('janedoe1@gmail.com', 115100, 'Biological Sciences')
+     -- Removed Jane Doe from database --
+
+     e. College Update Role, CENG
+         Error.INVALID_PERMISSIONS
+
+     f. God Level
+         200
+         New Occupant Row: ('jane', 'doe', 'janedoe1@gmail.com')
+         New PeopleDepartments Row: ('janedoe1@gmail.com', 115100, 'Biological Sciences')
+     -- Removed Jane Doe from database --

@@ -423,6 +423,59 @@ def get_equipment_locations(user_id, equipment_name):
 
             return cursor.fetchall()
 
+# 9. Sensitive Equipment Report
+def get_sensitive_equipment_locations(user_id, college_name):
+
+    if not validate_permission(user_id, PermissionLevel.DEPARTMENT_VIEW):
+        return Error.INVALID_PERMISSIONS
+
+    with get_connection() as conn:
+        with conn.cursor(dictionary = True) as cursor:
+
+            cursor.execute("""
+            SELECT * 
+            FROM Colleges 
+            WHERE name = %s
+            """, (college_name,))
+
+            if cursor.fetchone() is None:
+                return Error.NOT_FOUND
+
+            cursor.execute("""
+            SELECT DISTINCT r.building_id, r.room_num
+            FROM Rooms r
+            JOIN RoomEquipmentOwnerships o
+            ON o.room_num = r.room_num AND o.building_id = r.building_id 
+            JOIN Equipment e
+            ON o.equipment_id = e.id
+            JOIN Departments d 
+            ON r.department_id = d.id
+            JOIN Colleges c
+            ON d.college_code = c.code
+            WHERE c.name = %s
+            AND e.is_critical = TRUE
+            """, (college_name,))
+
+            rooms = cursor.fetchall()
+
+            if not rooms:
+                return None
+
+            for room in rooms:
+                cursor.execute("""
+                SELECT e.equipment_name, o.quantity AS equipment_count
+                FROM RoomEquipmentOwnerships o 
+                JOIN Equipment e
+                ON o.equipment_id = e.id 
+                WHERE (o.room_num = %s AND o.building_id = %s) AND (e.is_critical = TRUE)
+                """, (room["room_num"], room["building_id"]))
+
+                equipment = cursor.fetchall()
+
+
+                room["equipment"] = equipment
+
+            return rooms
 
 # -----------------------------------------------
 # DATA MANIPULATION
@@ -636,7 +689,96 @@ def department_assignment(user_id, department_id, building_id, room_num):
     conn.close()
     return 200
 
+# 5. Assign Equipment to Room
 
+def assign_equipment(user_id, building_id, room_num, equipment_name, new_count):
+
+    if not isinstance(building_id, str) or not isinstance(room_num, str) or not isinstance(equipment_name, str):
+        return Error.INVALID_INPUT
+
+    # Permission Check
+    if not validate_permission(user_id, PermissionLevel.DEPARTMENT_UPDATE):
+        return Error.INVALID_PERMISSIONS
+
+    with get_connection() as conn:
+        with conn.cursor(dictionary = True) as cursor:
+
+            try: # Get Equipment ID
+                cursor.execute("""
+                SELECT id 
+                FROM Equipment 
+                WHERE equipment_name = %s
+                """, (equipment_name,))
+
+                eq_results = cursor.fetchone()
+
+                if not eq_results:
+                    return Error.FOREIGN_KEY_FAILURE
+
+                equipment_id = eq_results["id"]
+
+
+                # does room already have this equipment?
+                cursor.execute("""
+                SELECT quantity
+                FROM RoomEquipmentOwnerships 
+                WHERE room_num = %s
+                AND building_id = %s
+                AND equipment_id = %s
+                """, (room_num, building_id, equipment_id))
+
+                quantity_result = cursor.fetchone()
+                old_count = quantity_result["quantity"] if quantity_result else 0
+
+                # Remove Equipment if new_count is zero
+                if quantity_result:
+
+                    cursor.execute("""
+                    UPDATE RoomEquipmentOwnerships 
+                    SET quantity = %s
+                    WHERE room_num = %s
+                    AND building_id = %s 
+                    AND equipment_id = %s
+                    """, (new_count, room_num, building_id, equipment_id))
+
+                # Insert New Equipment Assignment
+                elif new_count > 0:
+                    cursor.execute("""
+                    INSERT INTO RoomEquipmentOwnerships(room_num, building_id, equipment_id, quantity) VALUES( %s, %s, %s, %s)
+                    """, (room_num, building_id, equipment_id, new_count))
+
+                log_status = log_equipment_assignment(user_id, building_id, room_num, equipment_name, old_count, new_count)
+
+                if log_status != 200:
+                    return Error.LOGGING_FAILURE
+
+                conn.commit()
+            except mysql.connector.Error as e:
+                return convert_err_no(e.errno)
+            return 200
+
+# 6. Add New Equipment Type
+
+def add_equipment_type(user_id, equipment_name, is_critical):
+
+    if type(equipment_name) != str or type(is_critical) != bool:
+        raise TypeError()
+
+    if not validate_permission(user_id, PermissionLevel.DEPARTMENT_UPDATE):
+        return Error.INVALID_PERMISSIONS
+
+    with get_connection() as conn:
+        with conn.cursor() as cursor:
+            try:
+                cursor.execute("""
+                INSERT INTO Equipment (equipment_name, is_critical)
+                VALUES (%s, %s) 
+                """, (equipment_name, is_critical))
+
+                conn.commit()
+            except mysql.connector.Error as e:
+                return convert_err_no(e.errno)
+            return 200
 
 # -----------------------------------------------
 # LOGGING
@@ -722,6 +864,51 @@ def log_room_assignment_person(user_id, building_id, room_num, occupant_id, acti
     finally:
         cursor.close()
         conn.close()
+
+# 4. Equipment Assignment to a Room
+
+def log_equipment_assignment(user_id, building_id, room_num, equipment_name, before, after):
+    if not isinstance(building_id, str) or not isinstance(room_num, str) or not isinstance(equipment_name, str):
+        return Error.INVALID_INPUT
+    if not isinstance(before,int) or not isinstance(after,int):
+        return Error.INVALID_INPUT
+
+    with get_connection() as conn:
+        with conn.cursor(dictionary = True) as cursor:
+
+            cursor.execute("""
+                SELECT email
+                FROM Accounts 
+                WHERE username = %s
+                """, (user_id,))
+            row = cursor.fetchone()
+            if not row:
+                return Error.FOREIGN_KEY_FAILURE
+            user_email = row["email"]
+
+            cursor.execute("""
+            SELECT id 
+            FROM Equipment 
+            WHERE equipment_name = %s
+            """, (equipment_name,))
+
+            eq_row = cursor.fetchone()
+            if not eq_row:
+                return Error.FOREIGN_KEY_FAILURE
+
+            equipment_id = eq_row["id"]
+
+            try:
+                cursor.execute("""
+                INSERT INTO Logs( user_email, log_type, e_room_num, e_building_id, e_equipment_id, e_old_quantity, e_new_quantity) 
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                """,(user_email,'EQUIPMENT', room_num, building_id, equipment_id, before, after))
+
+                conn.commit()
+
+            except mysql.connector.Error as e:
+                return convert_err_no(e.errno)
+            return 200
 
 # 5. Change in assignment of room to department (logRoomDeptChange)
 def log_room_dept_change(user_id, building_id, room_num, prev_dept, new_dept):

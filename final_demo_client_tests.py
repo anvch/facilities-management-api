@@ -59,6 +59,21 @@ print("\n5. List of Employees ");
 employees = get_employees('dbrewster','BCSM','Biological Sciences')
 print(label_result_format('Admin account | Biological Sciences department',employee_pretty_print(employees)))
 
+print("\n6. Employee Info ")
+employee_input = {
+    "email": "Nikki_Adams@calpoly.edu"
+}
+# Using an Administrator account, select a faculty member from one BCSM department, and request information about them. Print the retrieved information.
+print(label_result_format('a. God Level Permissions | BCSM (Doug Brewster)', get_employee_info('dbrewster', employee_input)))
+# Using a College View account affiliated with BCSM,  select a faculty member from one BCSM department, and request information about them. Print the retrieved information.
+print(label_result_format('b. College View Permissions | BCSM (Sarah Carney)', get_employee_info('scarney', employee_input)))
+# Using a College View account affiliated with a different college,  select a faculty member from one BCSM department, and request information about them. Print the retrieved information. (this should trigger an access error).
+print(label_result_format('c. College View Permissions (Wrong College) | CENG (Allie Walter)', get_employee_info('awalter', employee_input)))
+
+print("\n7. Equipment Locations ")
+# Select a type of equipment. Request all known locations of this type of equipment using an Administrator account. Show output.
+
+
 with get_connection() as conn1:
     with conn1.cursor() as cursor1:
         print("\n9. Addition of an Employee - adding users to Bio Sci")

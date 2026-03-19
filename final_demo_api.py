@@ -309,6 +309,99 @@ def get_employees(user_id, college_code, department):
         cursor.close()
         conn.close()
 
+
+# 7. Employee Info (getEmployeeInfo)
+
+def get_employee_info(user_id, employee_input):
+
+    # Permission Check
+    if not validate_permission(user_id, PermissionLevel.DEPARTMENT_VIEW):
+        return Error.INVALID_PERMISSIONS
+
+    with get_connection() as conn:
+        with conn.cursor(dictionary = True) as cursor:
+
+            if "email" in employee_input:
+                cursor.execute("""
+                SELECT o.id, o.first_name, o.last_name, o.email, o.occupant_rank, o.occupant_type, d.name AS department_name, d.id AS department_id
+                FROM Occupants o 
+                JOIN PeopleDepartments p 
+                ON o.id = p.occupant_id
+                JOIN Departments d 
+                ON p.department_id = d.id
+                WHERE o.email = %s
+                """,(employee_input["email"],))
+            else:
+                cursor.execute("""
+                SELECT o.id, o.first_name, o.last_name, o.email, o.occupant_rank, o.occupant_type, d.name AS department_name, d.id AS department_id
+                FROM Occupants o 
+                JOIN PeopleDepartments p 
+                ON o.id = p.occupant_id
+                JOIN Departments d 
+                ON p.department_id = d.id
+                WHERE (o.first_name = %s AND o.last_name = %s) AND (p.department_id = %s)
+                """, (employee_input["first_name"], employee_input["last_name"], employee_input["department_id"]))
+
+            employee = cursor.fetchone()
+
+            if not employee:
+                return None
+
+            employee_id = employee["id"]
+
+            # validate permission to see the employee (department, college)
+            employee_department_id = employee["department_id"]
+            cursor.execute("""
+                SELECT id,college_code 
+                FROM Departments 
+                LEFT JOIN Colleges ON Departments.college_code = Colleges.code
+                WHERE id = %s
+                LIMIT 1;
+                """,(employee_department_id,))
+            row = cursor.fetchone()
+            if row is None:
+                return Error.NOT_FOUND
+            required_college_affiliation = row['college_code']
+            required_affiliations = Affiliations(employee_department_id, required_college_affiliation).to_dict()
+            if not validate_permission(user_id,PermissionLevel.DEPARTMENT_VIEW,required_affiliations):
+                return Error.INVALID_PERMISSIONS
+
+            # get rooms the employee occupies
+            cursor.execute("""
+            SELECT r.building_id, r.room_num, r.square_footage
+            FROM Rooms r 
+            JOIN RoomOccupancies ro 
+            ON r.room_num = ro.room_num 
+              AND r.building_id = ro.building_id
+            WHERE ro.occupant_id = %s
+            """, (employee_id,))
+
+            rooms = cursor.fetchall()
+
+            assigned_sqft = 0.0
+
+            # check for occupants in the same room
+            for room in rooms:
+                cursor.execute("""
+                SELECT COUNT(*) as occupant_count 
+                FROM RoomOccupancies
+                WHERE room_num = %s
+                     AND building_id = %s
+                """, (room["room_num"], room["building_id"]))
+
+                occupant_count = cursor.fetchone()["occupant_count"]
+                sqft_per_person = room["square_footage"] / occupant_count
+
+                room["assigned_sqft"] = sqft_per_person
+
+                assigned_sqft += sqft_per_person
+
+            employee["rooms"] = rooms
+            employee["assigned_sqft"] = assigned_sqft
+
+            return employee
+
+
 # -----------------------------------------------
 # DATA MANIPULATION
 
@@ -402,6 +495,7 @@ def assign_room(user_id, occupant_id, building_id, room_num):
             except mysql.connector.Error as e:
                 return convert_err_no(e.errno)
             return 200
+
 # 3. Remove Employee Assignment from a room (removeRoomAssignment)
 def remove_room_assignment(user_id, occupant_id, building_id, room_num):
     if (type(occupant_id) != str and type(occupant_id) != int) or type(building_id) != str or type(room_num) != str:
@@ -456,6 +550,71 @@ def remove_room_assignment(user_id, occupant_id, building_id, room_num):
     cursor.close()
     conn.close()
     return 200
+
+
+# 4. Assign Room to Department (departmentAssignment)
+def department_assignment(user_id, department_id, building_id, room_num):
+    if (type(department_id) != int) or type(building_id) != str or type(room_num) != str:
+        raise TypeError()
+
+    conn = get_connection()
+    cursor = conn.cursor()
+    # modify Rooms to have department_id match the given department
+    try:
+        # validate permissions
+        cursor.execute("""
+                    SELECT building_id,room_num, D.id, C.code
+                    FROM Rooms R LEFT JOIN Departments D ON R.department_id = D.id
+                                LEFT JOIN Colleges C ON D.college_code = C.code
+                    WHERE R.room_num = %s AND R.building_id = %s
+                    """, (room_num, building_id))
+
+        row = cursor.fetchone()
+        if row is None:
+            return Error.FOREIGN_KEY_FAILURE
+
+        required_department_affiliation = row[2]
+        required_college_affiliation = row[3]
+        required_affiliations = Affiliations(required_department_affiliation, required_college_affiliation).to_dict()
+
+        if not validate_permission(user_id,PermissionLevel.DEPARTMENT_UPDATE,required_affiliations):
+            return Error.INVALID_PERMISSIONS
+        
+        # get previous department assignment (if any)
+        cursor.execute(
+            "SELECT department_id FROM Rooms WHERE building_id = %s AND room_num = %s",
+            (building_id, room_num)
+        )
+        row = cursor.fetchone()
+        if not row:
+            return Error.FOREIGN_KEY_FAILURE
+        
+        prev_dept = row[0]
+
+        # create a log
+        log_result = log_room_dept_change(user_id, building_id, room_num, prev_dept, department_id)
+        if log_result != 200:
+            return Error.LOGGING_FAILURE
+
+        query = """
+            UPDATE Rooms
+            SET department_id = %s
+            WHERE building_id = %s
+              AND room_num = %s
+        """
+
+        cursor.execute(query, (department_id, building_id, room_num))
+        if cursor.rowcount == 0:
+            return Error.FOREIGN_KEY_FAILURE
+        conn.commit()
+    except mysql.connector.Error as e:
+        return convert_err_no(e.errno)
+    
+    cursor.close()
+    conn.close()
+    return 200
+
+
 
 # -----------------------------------------------
 # LOGGING
@@ -542,6 +701,50 @@ def log_room_assignment_person(user_id, building_id, room_num, occupant_id, acti
         cursor.close()
         conn.close()
 
+# 5. Change in assignment of room to department (logRoomDeptChange)
+def log_room_dept_change(user_id, building_id, room_num, prev_dept, new_dept):
+    if not validate_permission(user_id, PermissionLevel.DEPARTMENT_UPDATE):
+        return Error.INVALID_PERMISSIONS
+
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    try:
+        # get user email
+        cursor.execute("SELECT email FROM Accounts WHERE username = %s", (user_id,))
+        row = cursor.fetchone()
+        if not row:
+            return Error.FOREIGN_KEY_FAILURE  # user not found
+        user_email = row["email"]
+
+        # verify room exists
+        cursor.execute(
+            "SELECT building_id FROM Rooms WHERE building_id = %s AND room_num = %s",
+            (building_id, room_num)
+        )
+        if not cursor.fetchone():
+            return Error.FOREIGN_KEY_FAILURE  # room does not exist
+
+        # insert log record
+        insert_query = """
+            INSERT INTO Logs
+            (user_email, log_type, rd_room_num, rd_building_id, rd_prev_department_id, rd_new_department_id)
+            VALUES (%s, %s, %s, %s, %s, %s)
+        """
+        cursor.execute(insert_query, (
+            user_email,
+            'ROOM=DEPARTMENT',
+            room_num,
+            building_id,
+            prev_dept,
+            new_dept
+        ))
+        conn.commit()
+        return 200
+
+    finally:
+        cursor.close()
+        conn.close()
 
 def convert_err_no(err_no):
     if type(err_no) != int:

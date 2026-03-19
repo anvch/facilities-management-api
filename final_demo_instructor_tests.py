@@ -309,10 +309,68 @@ with get_connection() as conn2:
         print('\t\t Attempting to assign Building 2, 0104-00 to Department 115200...')
         print('\t\t ', department_assignment('scarney',117508,'002-0','0104-00'))
 
+#12
+print("Add Quantum Computer Equipment")
+print(label_result_format("Add new equipment type 'Quantum Computer'", add_equipment_type('dbrewster', 'Quantum Computer',True)))
+
+# verify the equipment was added
+with get_connection() as conn:
+    with conn.cursor() as cursor:
+        cursor.execute("""
+        SELECT equipment_name, is_critical
+        FROM Equipment
+        WHERE equipment_name =%s
+        """, ("Quantum Computer",))
+
+        qc = cursor.fetchall()
+        print(result_spacing_format(f" Verify Quantum Computer was added : {qc}"))
+
+# assign the new equipment to 3 rooms
+rooms = [
+    ('053-0', '0105-00', 1),
+    ('053-0','0106-00',2),
+    ('053-0','0316-00',3)
+]
+
+for building_id, room_num, quantity in rooms:
+    with get_connection() as conn:
+        with conn.cursor(dictionary=True) as cursor:
+            cursor.execute("""
+            SELECT e.equipment_name 
+            FROM RoomEquipmentOwnerships r
+            JOIN Equipment e
+            ON r.equipment_id = e.id
+            WHERE r.building_id = %s AND r.room_num = %s
+            """, (building_id, room_num))
+
+            current_eq = cursor.fetchall()
+
+            for eq in current_eq:
+                if eq['equipment_name'] != 'Quantum Computer':
+                    assign_equipment('dbrewster', building_id, room_num, eq['equipment_name'], 0)
+
+    result = assign_equipment('dbrewster', building_id, room_num, 'Quantum Computer', quantity)
+    print(label_result_format(f" Assign {quantity} Quantum Computer(s) to {building_id}{room_num}", result))
+
+    with get_connection() as conn:
+        with conn.cursor(dictionary=True) as cursor:
+            cursor.execute("""
+            SELECT e.equipment_name, r.quantity
+            FROM RoomEquipmentOwnerships r
+            JOIN Equipment e
+            ON r.equipment_id = e.id
+            WHERE r.building_id = %s AND r.room_num = %s
+            """, (building_id, room_num))
+
+            print(result_spacing_format(f"Current equipment in {building_id}{room_num}: {csv_pretty_print(cursor.fetchall())}"))
 
 print("\n13. Duplicate Entries using Admin account")
 
 print(label_result_format("Adding employee Michael Black (unique identifier is his email: Michael_Black@calpoly.edu)",add_employee('dbrewster','Michael','Black','Michael_Black@calpoly.edu','lecturer',115100)))
+# 13b
+print("Duplicate Equipment Type Admin Account")
+print(label_result_format("Adding a duplicate equipment type Glove Box", add_equipment_type('dbrewster', 'Glove Box', True)))
+
 
 
 

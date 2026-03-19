@@ -1,4 +1,5 @@
 from final_demo_api import *
+from pprint import pprint, pformat
 import sys
 with open("final_demo_instructor_test_output.txt","w") as f:
     pass
@@ -58,6 +59,27 @@ print(label_result_format('b. Building 2 floor 1 | Pixel coordinate 0,0',find_ro
 print("\n5. List of Employees ");
 employees = get_employees('dbrewster','BCSM','Biological Sciences')
 print(label_result_format('Admin account | Biological Sciences department',employee_pretty_print(employees)))
+
+print("\n6. Employee Info ")
+print("\n\tSearching for employee with email: Nikki_Adams@calpoly.edu")
+employee_input = {
+    "email": "Nikki_Adams@calpoly.edu"
+}
+# Using an Administrator account, select a faculty member from one BCSM department, and request information about them. Print the retrieved information.
+print('\n\t a. God Level Permissions | BCSM (Doug Brewster)')
+pretty_str = pformat(get_employee_info('dbrewster', employee_input), indent=1)
+print("         " + pretty_str.replace("\n", "\n        "))
+# Using a College View account affiliated with BCSM,  select a faculty member from one BCSM department, and request information about them. Print the retrieved information.
+print('\n\t b. College View Permissions | BCSM (Sarah Carney)')
+pretty_str = pformat(get_employee_info('scarney', employee_input), indent=1)
+print("         " + pretty_str.replace("\n", "\n        "))
+# Using a College View account affiliated with a different college,  select a faculty member from one BCSM department, and request information about them. Print the retrieved information. (this should trigger an access error).
+print(label_result_format('c. College View Permissions (Wrong College) | CENG (Allie Walter)', get_employee_info('awalter', employee_input)))
+
+print("\n7. Equipment Locations ")
+# Select a type of equipment. Request all known locations of this type of equipment using an Administrator account. Show output.
+print("\n   Finding all locations of an ULT Freezer")
+print(label_result_format('a. God Level Permissions | BCSM (Doug Brewster)', get_equipment_locations('dbrewster', "ULT Freezer")))
 
 with get_connection() as conn1:
     with conn1.cursor() as cursor1:
@@ -223,6 +245,70 @@ with get_connection() as conn1:
                                  LEFT JOIN Occupants AS O on O.id = RO.occupant_id
                         WHERE RO.occupant_id = 263""")
         print(result_spacing_format("All RoomOccupancies Rows: {}".format(csv_pretty_print(cursor1.fetchall()))))
+
+with get_connection() as conn2:
+    with conn2.cursor() as cursor2:
+        # Department room assignment. Select a BCSM department, and a room that is not assigned to it.  
+        print("\n11. Room assignment to a department - adding Ctr Sci (117508) deparment to Building 2, 0104-00 (Belongs to School of Education department 117600)")
+        cursor2.execute("""
+                SELECT department_id
+                FROM Rooms AS R
+                WHERE R.building_id = '002-0' AND room_num = '0104-00'""")
+        print("\n\t Department currently assigned to Building 2, 0104-00: ", cursor2.fetchone()[0])
+        conn2.commit()
+
+        # Using an Administrative account, (re-)assign the room to the selected department. Confirm assignment. Re-assign the room back to the original department.  
+        print('\t a. God Level Permissions | BCSM (Doug Brewster)')
+        print('\t\t Assigning Building 2, 0104-00 to Department 117508...')
+        department_assignment('dbrewster',117508,'002-0','0104-00')
+        print_latest_log()
+        cursor2.execute("""
+                SELECT department_id
+                FROM Rooms AS R
+                WHERE R.building_id = '002-0' AND room_num = '0104-00'""")
+        print("\t\t Department currently assigned to Building 2, 0104-00: ", cursor2.fetchone()[0])
+        conn2.commit()
+        print("\t\t Reassigning back to department 117600")
+        department_assignment('dbrewster',117600,'002-0','0104-00')
+
+        cursor2.execute("""
+                SELECT department_id
+                FROM Rooms AS R
+                WHERE R.building_id = '002-0' AND room_num = '0104-00'""")
+        print("\t\t Department currently assigned to Building 2, 0104-00: ", cursor2.fetchone()[0])
+        conn2.commit()
+
+        # Using a BCSM College Update account, (re-)assign the room to the selected department. Confirm assignment. Re-assign the room back to the original department.  
+        print('\n\t b. College Update Permissions | BCSM (Karl Saunders)')
+        print('\t\t Assigning Building 2, 0104-00 to Department 117508...')
+        department_assignment('ksaunders',117508,'002-0','0104-00')
+        print_latest_log()
+        cursor2.execute("""
+                SELECT department_id
+                FROM Rooms AS R
+                WHERE R.building_id = '002-0' AND room_num = '0104-00'""")
+        print("\t\t Department currently assigned to Building 2, 0104-00: ", cursor2.fetchone()[0])
+        conn2.commit()
+        print("\t\t Reassigning back to department 117600")
+        department_assignment('ksaunders',117600,'002-0','0104-00')
+
+        cursor2.execute("""
+                SELECT department_id
+                FROM Rooms AS R
+                WHERE R.building_id = '002-0' AND room_num = '0104-00'""")
+        print("\t\t Department currently assigned to Building 2, 0104-00: ", cursor2.fetchone()[0])
+        conn2.commit()
+ 
+        # Using a College Update account affiliated with a different college, (re-)assign the room to the selected department. Show output (should raise permission error)
+        print('\n\t c. College Update Permissions | CENG (Robert Crockett)')
+        print('\t\t Attempting to assign Building 2, 0104-00 to Department 115200...')
+        print('\t\t ', department_assignment('rcrockett',117508,'002-0','0104-00'))
+
+        # Using a BCSM College View account, (re-)assign the room to the selected department. Show output (should raise permission error)
+        print('\n\t d. College View Permissions | BCSM (Sarah Carney)')
+        print('\t\t Attempting to assign Building 2, 0104-00 to Department 115200...')
+        print('\t\t ', department_assignment('scarney',117508,'002-0','0104-00'))
+
 
 print("\n13. Duplicate Entries using Admin account")
 

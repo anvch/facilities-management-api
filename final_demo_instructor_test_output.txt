@@ -24,7 +24,7 @@ DATA RETRIEVAL
          Math Science Teacher Int,
          LSAMP,
          STAR,
-         Design & Fabrication FÃ¡cil,
+         Design & Fabrication Fácil,
          School of Education,
          Unknown Department
 
@@ -102,6 +102,94 @@ DATA RETRIEVAL
              'total_square_footage': None
          }
 
+6. Employee Info 
+
+	Searching for employee with email: Nikki_Adams@calpoly.edu
+
+	 a. God Level Permissions | BCSM (Doug Brewster)
+         {'assigned_sqft': 1320.375,
+         'department_id': 115100,
+         'department_name': 'Biological Sciences',
+         'email': 'Nikki_Adams@calpoly.edu',
+         'first_name': 'Nikki',
+         'id': 2,
+         'last_name': 'Adams',
+         'occupant_rank': None,
+         'occupant_type': 'faculty',
+         'rooms': [{'assigned_sqft': 155.145,
+                    'building_id': '053-0',
+                    'room_num': '0107-00',
+                    'square_footage': 310.29},
+                   {'assigned_sqft': 648.88,
+                    'building_id': '053-0',
+                    'room_num': '0316-00',
+                    'square_footage': 648.88},
+                   {'assigned_sqft': 65.0,
+                    'building_id': '053-0',
+                    'room_num': '0316-A0',
+                    'square_footage': 65.0},
+                   {'assigned_sqft': 337.23,
+                    'building_id': '053-0',
+                    'room_num': '0317-00',
+                    'square_footage': 337.23},
+                   {'assigned_sqft': 114.12,
+                    'building_id': '033-0',
+                    'room_num': '0371-00',
+                    'square_footage': 114.12}]}
+
+	 b. College View Permissions | BCSM (Sarah Carney)
+         {'assigned_sqft': 1320.375,
+         'department_id': 115100,
+         'department_name': 'Biological Sciences',
+         'email': 'Nikki_Adams@calpoly.edu',
+         'first_name': 'Nikki',
+         'id': 2,
+         'last_name': 'Adams',
+         'occupant_rank': None,
+         'occupant_type': 'faculty',
+         'rooms': [{'assigned_sqft': 155.145,
+                    'building_id': '053-0',
+                    'room_num': '0107-00',
+                    'square_footage': 310.29},
+                   {'assigned_sqft': 648.88,
+                    'building_id': '053-0',
+                    'room_num': '0316-00',
+                    'square_footage': 648.88},
+                   {'assigned_sqft': 65.0,
+                    'building_id': '053-0',
+                    'room_num': '0316-A0',
+                    'square_footage': 65.0},
+                   {'assigned_sqft': 337.23,
+                    'building_id': '053-0',
+                    'room_num': '0317-00',
+                    'square_footage': 337.23},
+                   {'assigned_sqft': 114.12,
+                    'building_id': '033-0',
+                    'room_num': '0371-00',
+                    'square_footage': 114.12}]}
+
+     c. College View Permissions (Wrong College) | CENG (Allie Walter)
+         Error.INVALID_PERMISSIONS
+
+7. Equipment Locations 
+
+   Finding all locations of an ULT Freezer
+
+     a. God Level Permissions | BCSM (Doug Brewster)
+         {'building_id': '033-0', 'room_num': '0258-A0', 'equipment_count': 3},
+         {'building_id': '181-0', 'room_num': '0303-A0', 'equipment_count': 3},
+         {'building_id': '181-0', 'room_num': '0350-B0', 'equipment_count': 2},
+         {'building_id': '033-0', 'room_num': '0394-00', 'equipment_count': 1},
+         {'building_id': '033-0', 'room_num': '0395-00', 'equipment_count': 2},
+         {'building_id': '181-0', 'room_num': '0403-A0', 'equipment_count': 3},
+         {'building_id': '181-0', 'room_num': '0450-B0', 'equipment_count': 3},
+         {'building_id': '180-0', 'room_num': '0463-00', 'equipment_count': 1},
+         {'building_id': '033-0', 'room_num': '0466-00', 'equipment_count': 1},
+         {'building_id': '180-0', 'room_num': '0466-00', 'equipment_count': 1},
+         {'building_id': '033-0', 'room_num': '0468-A0', 'equipment_count': 1},
+         {'building_id': '180-0', 'room_num': '0469-00', 'equipment_count': 1},
+         {'building_id': '180-0', 'room_num': '0536-00', 'equipment_count': 1}
+
 9. Addition of an Employee - adding John Doe to Chem Dept
 
      a. College View Role | BCSM (Sarah Carney)
@@ -138,9 +226,9 @@ DATA RETRIEVAL
          All RoomOccupancies Rows: 
              ('Candace', 'McNabb', '0206-A0', '180-0'),
              ('Candace', 'McNabb', '0336-00', '180-0')
-         Latest log:  {'log_id': 212, 'user_email': 'ksaunders@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 5, 16, 26), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'ADD', 'ro_occupant_id': 263, 'ro_room_num': '0336-00', 'ro_building_id': '180-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+         Latest log:  {'log_id': 483, 'user_email': 'ksaunders@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 6, 58, 23), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'ADD', 'ro_occupant_id': 263, 'ro_room_num': '0336-00', 'ro_building_id': '180-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
      - Remove Building 180, 465-00 assignment -
-         Latest log:  {'log_id': 213, 'user_email': 'ksaunders@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 5, 16, 26), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 263, 'ro_room_num': '0336-00', 'ro_building_id': '180-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+         Latest log:  {'log_id': 484, 'user_email': 'ksaunders@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 6, 58, 24), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 263, 'ro_room_num': '0336-00', 'ro_building_id': '180-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
          All RoomOccupancies Rows: 
              ('Candace', 'McNabb', '0206-A0', '180-0')
 
@@ -149,9 +237,9 @@ DATA RETRIEVAL
          All RoomOccupancies Rows: 
              ('Candace', 'McNabb', '0206-A0', '180-0'),
              ('Candace', 'McNabb', '0336-00', '180-0')
-         Latest log:  {'log_id': 214, 'user_email': 'cmcnabb@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 5, 16, 27), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'ADD', 'ro_occupant_id': 263, 'ro_room_num': '0336-00', 'ro_building_id': '180-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+         Latest log:  {'log_id': 485, 'user_email': 'cmcnabb@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 6, 58, 25), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'ADD', 'ro_occupant_id': 263, 'ro_room_num': '0336-00', 'ro_building_id': '180-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
      - Remove Building 180, 465-00 assignment -
-         Latest log:  {'log_id': 215, 'user_email': 'cmcnabb@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 5, 16, 27), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 263, 'ro_room_num': '0336-00', 'ro_building_id': '180-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+         Latest log:  {'log_id': 486, 'user_email': 'cmcnabb@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 6, 58, 26), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 263, 'ro_room_num': '0336-00', 'ro_building_id': '180-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
          All RoomOccupancies Rows: 
              ('Candace', 'McNabb', '0206-A0', '180-0')
 
@@ -159,7 +247,7 @@ DATA RETRIEVAL
          Error.INVALID_PERMISSIONS
          All RoomOccupancies Rows: 
              ('Candace', 'McNabb', '0206-A0', '180-0')
-         Latest log:  {'log_id': 215, 'user_email': 'cmcnabb@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 5, 16, 27), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 263, 'ro_room_num': '0336-00', 'ro_building_id': '180-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+         Latest log:  {'log_id': 486, 'user_email': 'cmcnabb@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 6, 58, 26), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 263, 'ro_room_num': '0336-00', 'ro_building_id': '180-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
          All RoomOccupancies Rows: 
              ('Candace', 'McNabb', '0206-A0', '180-0')
 
@@ -168,11 +256,36 @@ DATA RETRIEVAL
          All RoomOccupancies Rows: 
              ('Candace', 'McNabb', '0206-A0', '180-0'),
              ('Candace', 'McNabb', '0336-00', '180-0')
-         Latest log:  {'log_id': 216, 'user_email': 'dbrewster@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 5, 16, 28), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'ADD', 'ro_occupant_id': 263, 'ro_room_num': '0336-00', 'ro_building_id': '180-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+         Latest log:  {'log_id': 488, 'user_email': 'dbrewster@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 6, 58, 27), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'ADD', 'ro_occupant_id': 263, 'ro_room_num': '0336-00', 'ro_building_id': '180-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
      - Remove Building 180, 465-00 assignment -
-         Latest log:  {'log_id': 217, 'user_email': 'dbrewster@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 5, 16, 29), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 263, 'ro_room_num': '0336-00', 'ro_building_id': '180-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+         Latest log:  {'log_id': 489, 'user_email': 'dbrewster@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 6, 58, 27), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 263, 'ro_room_num': '0336-00', 'ro_building_id': '180-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
          All RoomOccupancies Rows: 
              ('Candace', 'McNabb', '0206-A0', '180-0')
+
+11. Room assignment to a department - adding Ctr Sci (117508) deparment to Building 2, 0104-00 (Belongs to School of Education department 117600)
+
+	 Department currently assigned to Building 2, 0104-00:  117600
+	 a. God Level Permissions | BCSM (Doug Brewster)
+		 Assigning Building 2, 0104-00 to Department 117508...
+         Latest log:  {'log_id': 490, 'user_email': 'dbrewster@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 6, 58, 28), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': '0104-00', 'rd_building_id': '002-0', 'rd_prev_department_id': 117600, 'rd_new_department_id': 117508, 'ro_add_or_remove': None, 'ro_occupant_id': None, 'ro_room_num': None, 'ro_building_id': None, 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+		 Department currently assigned to Building 2, 0104-00:  117508
+		 Reassigning back to department 117600
+		 Department currently assigned to Building 2, 0104-00:  117600
+
+	 b. College Update Permissions | BCSM (Karl Saunders)
+		 Assigning Building 2, 0104-00 to Department 117508...
+         Latest log:  {'log_id': 492, 'user_email': 'ksaunders@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 6, 58, 29), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': '0104-00', 'rd_building_id': '002-0', 'rd_prev_department_id': 117600, 'rd_new_department_id': 117508, 'ro_add_or_remove': None, 'ro_occupant_id': None, 'ro_room_num': None, 'ro_building_id': None, 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+		 Department currently assigned to Building 2, 0104-00:  117508
+		 Reassigning back to department 117600
+		 Department currently assigned to Building 2, 0104-00:  117600
+
+	 c. College Update Permissions | CENG (Robert Crockett)
+		 Attempting to assign Building 2, 0104-00 to Department 115200...
+		  Error.INVALID_PERMISSIONS
+
+	 d. College View Permissions | BCSM (Sarah Carney)
+		 Attempting to assign Building 2, 0104-00 to Department 115200...
+		  Error.INVALID_PERMISSIONS
 
 13. Duplicate Entries using Admin account
 

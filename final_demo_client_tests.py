@@ -56,8 +56,8 @@ print(label_result_format('b. Building 53 floor 2 | Pixel coordinate 0,0',find_r
 print(label_result_format('b. Building 2 floor 1 | Pixel coordinate 0,0',find_room('dbrewster','002-0',1,(0,0))))
 
 print("\n5. List of Employees ");
-employees = get_employees('dbrewster','BCSM','Mathematics')
-print(label_result_format('Admin account | Math department',employee_pretty_print(employees)))
+employees = get_employees('dbrewster','BCSM','Biological Sciences')
+print(label_result_format('Admin account | Biological Sciences department',employee_pretty_print(employees)))
 
 with get_connection() as conn1:
     with conn1.cursor() as cursor1:

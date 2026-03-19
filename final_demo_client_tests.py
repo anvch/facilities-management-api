@@ -12,7 +12,7 @@ def employee_pretty_print(employees):
         formatted_employees.append(emp_str)
 
     # Join all employees with a comma and double newline for spacing
-    return ",\n\n         ".join(formatted_employees)
+    return ",\n\n         ".join(formatted_employees[:3])
 def label_result_format(label, result):
     # If the result is a list, format it with new lines
     if isinstance(result, list):

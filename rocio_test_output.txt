@@ -6,7 +6,7 @@ Data Retrieval ======================
 7. getEmployeeInfo()
 
      a. Valid email lookup:
-         None
+         {'id': 1, 'first_name': 'Roberto', 'last_name': 'Abril Valenzuela', 'email': 'Roberto_Abril Valenzuela@calpoly.edu', 'occupant_rank': None, 'occupant_type': 'faculty', 'department_name': 'Physics', 'rooms': [{'building_id': '052-0', 'room_num': '0E15-00', 'square_footage': 168.97, 'assigned_sqft': 84.485}], 'assigned_sqft': 84.485}
     
 
      b. Valid name lookup:
@@ -23,7 +23,7 @@ Data Retrieval ======================
 8. getEquipmentLocations()
 
      a. valid permissions, equipment exists:
-         []
+         [{'building_id': '053-0', 'room_num': '0114-00', 'equipment_count': 2}, {'building_id': '053-0', 'room_num': '0210-00', 'equipment_count': 2}, {'building_id': '180-0', 'room_num': '0431-00', 'equipment_count': 1}, {'building_id': '181-0', 'room_num': '0452-00', 'equipment_count': 1}]
     
 
      b. valid permissions, equipment not found:
@@ -36,7 +36,7 @@ Data Retrieval ======================
 9. getSensitiveEquipmentLocations()
 
      a. Valid permissions, college with sensitive equipment:
-         []
+         None
     
 
      c. Invalid permissions:
@@ -44,7 +44,7 @@ Data Retrieval ======================
     
 
      d. College does not exist:
-         Error.INVALID_PERMISSIONS
+         Error.NOT_FOUND
     
 
 ----------------------------
@@ -54,15 +54,15 @@ Data Manipulation =====================
 5. assignEquipment()
 
      a. Valid permissions, insert equipment:
-         Error.FOREIGN_KEY_FAILURE
+         200
     
 
      b. Valid permissions, update equipment quantity:
-         Error.INVALID_PERMISSIONS
+         200
     
 
      c. Remove equipment:
-         Error.FOREIGN_KEY_FAILURE
+         200
     
 
      d. Invalid permissions:
@@ -72,9 +72,6 @@ Data Manipulation =====================
      e. Equipment does not exist:
          Error.FOREIGN_KEY_FAILURE
     
-Logging Test: Equipment Assignment
-Latest log after assignment
-         Latest log:  {'log_id': 33, 'user_email': 'achen@gmail.com', 'time_altered': datetime.datetime(2026, 3, 10, 17, 49, 53), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': '0001-00', 'rd_building_id': '033-0', 'rd_prev_department_id': 115200, 'rd_new_department_id': 115100, 'ro_add_or_remove': None, 'ro_occupant_id': None, 'ro_room_num': None, 'ro_building_id': None, 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
 6. addEquipmentType()
 
      a. Invalid permissions:
@@ -82,7 +79,7 @@ Latest log after assignment
     
 
      b. Valid permission:
-         Error.DUPLICATE_PRIMARY_KEY_FAILURE
+         200
     
 
      Verify row inserted:

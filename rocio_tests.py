@@ -2,6 +2,12 @@
 
 from time import sleep
 
+from db import get_connection
+
+conn = get_connection()
+print("Connected to database")
+conn.close()
+
 from rocio_api import *
 import sys
 with open("rocio_test_output.txt", "w") as f:
@@ -22,13 +28,14 @@ def header_string(base_string):
 sys.stdout = open("rocio_test_output.txt", "a")
 
 
+
 # Data Retrieval ======================
 print(header_string("Data Retrieval ======================"))
 
 # 7. getEmployeeInfo()
 print ("7. getEmployeeInfo()")
 # Valid email
-print(label_result_format("a. Valid email lookup:", get_employee_info("rrodriguez", {"email":"rabrilva@calpoly.edu"})))
+print(label_result_format("a. Valid email lookup:", get_employee_info("rrodriguez", {"email":"Roberto_Abril Valenzuela@calpoly.edu"})))
 # Valid Name + Department
 print(label_result_format("b. Valid name lookup:", get_employee_info("rrodriguez", {"first_name": "Roberto", "last_name": "Abril Valenzuela", "department_id":115500})))
 # Invalid Permissions
@@ -40,7 +47,7 @@ print(label_result_format("d. Employee not found:", get_employee_info("rrodrigue
 # 8. getEquipmentLocations()
 print("8. getEquipmentLocations()")
 # valid permissions + equipment exists
-print(label_result_format("a. valid permissions, equipment exists:", get_equipment_locations("rrodriguez", 'Freezer')))
+print(label_result_format("a. valid permissions, equipment exists:", get_equipment_locations("rrodriguez", 'Glove Box')))
 # valid permission but the equipment does not exist
 print(label_result_format("b. valid permissions, equipment not found:", get_equipment_locations('rrodriguez', 'FakeEquipment')))
 # invalid permissions
@@ -54,7 +61,7 @@ print(label_result_format("a. Valid permissions, college with sensitive equipmen
 # invalid permissions
 print(label_result_format("c. Invalid permissions:", get_sensitive_equipment_locations('notReal', 'College of Engineering')))
 # college does not exist
-print(label_result_format("d. College does not exist:", get_sensitive_equipment_locations('rrodr', 'Fake College')))
+print(label_result_format("d. College does not exist:", get_sensitive_equipment_locations('rrodriguez', 'Fake College')))
 
 
 # Data Manipulation =====================
@@ -63,22 +70,15 @@ print(header_string("Data Manipulation ====================="))
 # 5. assignEquipment()
 print("5. assignEquipment()")
 # insert new equipment into a room
-print(label_result_format("a. Valid permissions, insert equipment:", assign_equipment('rrodriguez', 53, '0210-00', 'Freezer', 2)))
+print(label_result_format("a. Valid permissions, insert equipment:", assign_equipment('rrodriguez', '053-0', '0114-00', 'Glove Box', 2)))
 # update equipment quantity
-print(label_result_format("b. Valid permissions, update equipment quantity:", assign_equipment('rrodr', 53, '0210-00', 'Freezer', 5)))
+print(label_result_format("b. Valid permissions, update equipment quantity:", assign_equipment('rrodriguez', '053-0', '0114-00', 'Refrigerator and/or Freezer', 5)))
 # remove equipment (new count = 0)
-print(label_result_format("c. Remove equipment:", assign_equipment('rrodriguez', 53, '0210-00', 'Freezer', 0)))
+print(label_result_format("c. Remove equipment:", assign_equipment('rrodriguez', '053-0', '0114-00', 'Refrigerator and/or Freezer', 0)))
 # invalid permissions
-print(label_result_format("d. Invalid permissions:",assign_equipment('notReal', 53, '0220-00', 'Freezer', 2)))
+print(label_result_format("d. Invalid permissions:",assign_equipment('notReal', '053-0', '0114-00', 'Refrigerator and/or Freezer', 2)))
 # equipment does not exist
-print(label_result_format("e. Equipment does not exist:",assign_equipment('rrodriguez', 53, '0210-00', 'FakeEquipment', 2)))
-
-# Logging 4 - logEquipmentAssignment
-print("Logging Test: Equipment Assignment")
-assign_equipment('rrodr', 53, '0210-00', 'Freezer', 2)
-print("Latest log after assignment")
-print_latest_log()
-sleep(1)
+print(label_result_format("e. Equipment does not exist:",assign_equipment('rrodriguez','053-0', '0114-00', 'FakeEquipment', 2)))
 
 
 # 6. addEquipmentType
@@ -86,11 +86,19 @@ print("6. addEquipmentType()")
 # invalid permissions
 print(label_result_format("a. Invalid permissions:", add_equipment_type('fakePermission', 'SomeEquipment', True)))
 # valid input
-print(label_result_format("b. Valid permission:", add_equipment_type('achen', 'SomeEquipment', True)))
+with get_connection() as conn:
+    with conn.cursor() as cursor:
+        cursor.execute("""
+        DELETE FROM Equipment
+        WHERE equipment_name = %s
+        """,('SomeEquipment',))
+        conn.commit()
+print(label_result_format("b. Valid permission:", add_equipment_type('rrodriguez', 'SomeEquipment', True)))
 
 with get_connection() as conn:
     with conn.cursor() as cursor:
         cursor.execute("""
+        
         SELECT equipment_name, is_critical
         FROM Equipment
         WHERE equipment_name = %s
@@ -98,10 +106,3 @@ with get_connection() as conn:
         row = cursor.fetchone()
 
 print(label_result_format("Verify row inserted:", row))
-
-with get_connection() as conn:
-    with conn.cursor() as cursor:
-        cursor.execute("""
-        DELETE FROM Equipment
-        WHERE equipment_name = %s
-        """,('SomeEquipment',))

@@ -362,7 +362,6 @@ def assign_room(user_id, occupant_id, building_id, room_num):
                                             LEFT JOIN Colleges C ON D.college_code = C.code
                                WHERE R.room_num = %s AND R.building_id = %s
                                """, (room_num, building_id))
-
                 row = cursor.fetchone()
                 if row is None:
                     return Error.FOREIGN_KEY_FAILURE
@@ -373,6 +372,25 @@ def assign_room(user_id, occupant_id, building_id, room_num):
 
                 if not validate_permission(user_id,PermissionLevel.DEPARTMENT_UPDATE,required_affiliations):
                     return Error.INVALID_PERMISSIONS
+
+                cursor.execute("""
+                               SELECT PD.department_id,D.college_code
+                               FROM Occupants O
+                               LEFT JOIN PeopleDepartments PD ON O.id = PD.occupant_id
+                               LEFT JOIN Departments D ON PD.department_id = D.id
+                               WHERE O.id = %s
+                               """, (occupant_id,))
+                row = cursor.fetchone()
+                if row is None:
+                    return Error.FOREIGN_KEY_FAILURE
+
+                required_department_affiliation = row[0]
+                required_college_affiliation = row[1]
+                required_affiliations = Affiliations(required_department_affiliation, required_college_affiliation).to_dict()
+
+                if not validate_permission(user_id,PermissionLevel.DEPARTMENT_UPDATE,required_affiliations):
+                    return Error.INVALID_PERMISSIONS
+
                 cursor.execute("""
                                INSERT INTO RoomOccupancies(occupant_id,room_num,building_id)
                                VALUES (%s, %s, %s)
@@ -384,6 +402,60 @@ def assign_room(user_id, occupant_id, building_id, room_num):
             except mysql.connector.Error as e:
                 return convert_err_no(e.errno)
             return 200
+# 3. Remove Employee Assignment from a room (removeRoomAssignment)
+def remove_room_assignment(user_id, occupant_id, building_id, room_num):
+    if (type(occupant_id) != str and type(occupant_id) != int) or type(building_id) != str or type(room_num) != str:
+        raise TypeError()
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    try:
+        # validate permissions
+        cursor.execute("""
+                       SELECT building_id,room_num, D.id, C.code
+                       FROM Rooms R LEFT JOIN Departments D ON R.department_id = D.id
+                                    LEFT JOIN Colleges C ON D.college_code = C.code
+                       WHERE R.room_num = %s AND R.building_id = %s
+                       """, (room_num, building_id))
+
+        row = cursor.fetchone()
+        if row is None:
+            return Error.FOREIGN_KEY_FAILURE
+
+        required_department_affiliation = row[2]
+        required_college_affiliation = row[3]
+        required_affiliations = Affiliations(required_department_affiliation, required_college_affiliation).to_dict()
+
+        if not validate_permission(user_id,PermissionLevel.DEPARTMENT_UPDATE,required_affiliations):
+            return Error.INVALID_PERMISSIONS
+
+        # log room removal
+        log = log_room_assignment_person(user_id, building_id, room_num, occupant_id, "REMOVE")
+        if log is None:
+            return Error.LOGGING_FAILURE
+
+        # remove assignment
+        query = """
+                DELETE FROM RoomOccupancies
+                WHERE occupant_id = %s
+                  AND building_id = %s
+                  AND room_num = %s \
+                """
+
+        cursor.execute(query, (occupant_id, building_id, room_num))
+
+        if cursor.rowcount == 0:
+            return Error.FOREIGN_KEY_FAILURE
+
+        conn.commit()
+
+    except mysql.connector.Error as e:
+        return convert_err_no(e.errno)
+
+    cursor.close()
+    conn.close()
+    return 200
 
 # -----------------------------------------------
 # LOGGING

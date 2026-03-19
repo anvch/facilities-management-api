@@ -1,4 +1,5 @@
 from final_demo_api import *
+from pprint import pprint, pformat
 import sys
 with open("final_demo_client_test_output.txt","w") as f:
     pass
@@ -60,13 +61,18 @@ employees = get_employees('dbrewster','BCSM','Biological Sciences')
 print(label_result_format('Admin account | Biological Sciences department',employee_pretty_print(employees)))
 
 print("\n6. Employee Info ")
+print("\n\tSearching for employee with email: Nikki_Adams@calpoly.edu")
 employee_input = {
     "email": "Nikki_Adams@calpoly.edu"
 }
 # Using an Administrator account, select a faculty member from one BCSM department, and request information about them. Print the retrieved information.
-print(label_result_format('a. God Level Permissions | BCSM (Doug Brewster)', get_employee_info('dbrewster', employee_input)))
+print('\n\t a. God Level Permissions | BCSM (Doug Brewster)')
+pretty_str = pformat(get_employee_info('dbrewster', employee_input), indent=1)
+print("         " + pretty_str.replace("\n", "\n        "))
 # Using a College View account affiliated with BCSM,  select a faculty member from one BCSM department, and request information about them. Print the retrieved information.
-print(label_result_format('b. College View Permissions | BCSM (Sarah Carney)', get_employee_info('scarney', employee_input)))
+print('\n\t b. College View Permissions | BCSM (Sarah Carney)')
+pretty_str = pformat(get_employee_info('scarney', employee_input), indent=1)
+print("         " + pretty_str.replace("\n", "\n        "))
 # Using a College View account affiliated with a different college,  select a faculty member from one BCSM department, and request information about them. Print the retrieved information. (this should trigger an access error).
 print(label_result_format('c. College View Permissions (Wrong College) | CENG (Allie Walter)', get_employee_info('awalter', employee_input)))
 

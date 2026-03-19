@@ -1,0 +1,180 @@
+
+--------------
+DATA RETRIEVAL
+--------------
+
+1. List of Departments
+
+     a. BCSM
+         Liberal Studies,
+         Biological Sciences,
+         Chemistry & Biochemistry,
+         Statistics,
+         Mathematics,
+         Physics,
+         Kinesiology & Public Hlth,
+         College General Use,
+         Advising Center,
+         Deans Office,
+         Computing Support Services,
+         Advancement,
+         Cntr for Cstal Marine Sci,
+         Health Professions,
+         Ctr Sci,
+         Math Science Teacher Int,
+         LSAMP,
+         STAR,
+         Design & Fabrication Fácil,
+         School of Education,
+         Unknown Department
+
+2. List of FloorPlans (image_path, building_id, floor_num, building_name)
+
+     a. All floor plans
+         ('building-053-0_science-north_1.svg', '053-0', 1, 'Science North'),
+         ('building-053-0_science-north_2.svg', '053-0', 2, 'Science North'),
+         ('building033floor4.png', '033-0', 3, 'Clyde P. Fisher Science Hall')
+
+3. List of Rooms (building_id, room_num, 4 bounding fields, department_id)
+
+     a. Rooms in Building 53, floor 2
+         ('053-0', '0203-00', 339, 403, 388, 484, 115500),
+         ('053-0', '0205-00', 317, 444, 338, 483, 117501),
+         ('053-0', '0210-00', 224, 520, 296, 550, 115100),
+         ('053-0', '0210-A0', 267, 472, 295, 499, 117501),
+         ('053-0', '0210-B0', 268, 500, 295, 524, 117501),
+         ('053-0', '0210-C0', 268, 524, 296, 550, 117501),
+         ('053-0', '0210-D0', 256, 534, 267, 550, 117501),
+         ('053-0', '0210-E0', 224, 520, 257, 550, 117501),
+         ('053-0', '0210-F0', 223, 489, 257, 520, 117501),
+         ('053-0', '0210-G0', 224, 462, 256, 488, 117501),
+         ('053-0', '0211-00', 255, 414, 296, 460, 117501),
+         ('053-0', '0211-A0', 224, 441, 256, 462, 117501),
+         ('053-0', '0211-B0', 224, 414, 255, 440, 117501),
+         ('053-0', '0212-00', 224, 391, 295, 413, 115100),
+         ('053-0', '0216-00', 307, 241, 318, 273, 117501),
+         ('053-0', '0217-00', 337, 212, 351, 228, 115100),
+         ('053-0', '0218-00', 352, 211, 387, 238, 115100),
+         ('053-0', '0219-00', 351, 239, 389, 266, 115100),
+         ('053-0', '0220-00', 352, 266, 388, 292, 115100)
+
+4. Room Selection (building_id, room_num)
+
+     a. Building 53 floor 2, Room 203 | Pixel coordinate 340,404
+         ('053-0', '0203-00')
+
+     b. Building 53 floor 2, Room 210G | Pixel coordinate 225,463
+         ('053-0', '0210-G0')
+
+     b. Building 53 floor 2 | Pixel coordinate 0,0
+         
+
+     b. Building 2 floor 1 | Pixel coordinate 0,0
+         
+
+5. List of Employees 
+
+     Admin account | Biological Sciences department
+         {
+             'occupant_id': 2,
+             'full_name': 'Nikki Adams',
+             'email': 'Nikki_Adams@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '033-0-0371-00,053-0-0107-00,053-0-0316-00,053-0-0316-A0,053-0-0317-00',
+             'total_square_footage': 1320.375
+         },
+
+         {
+             'occupant_id': 8,
+             'full_name': 'Scott Appleby',
+             'email': 'Scott_Appleby@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': '181-0-0407-00',
+             'total_square_footage': 102.66333333333334
+         },
+
+         {
+             'occupant_id': 12,
+             'full_name': 'Praveen Babu',
+             'email': 'Praveen_Babu@calpoly.edu',
+             'occupant_rank': None,
+             'rooms': None,
+             'total_square_footage': None
+         }
+
+9. Addition of an Employee - adding John Doe to Chem Dept
+
+     a. College View Role | BCSM (Sarah Carney)
+         Error.INVALID_PERMISSIONS
+
+     c. Department Update Role | Bio Sci dept (Michael Black)
+         Error.INVALID_PERMISSIONS
+
+     b. Department Update Role | Chem dept (Candance Mcnabb)
+         200
+         New Occupant Row: ('john', 'doe', 'johndoe1@gmail.com')
+         New PeopleDepartments Row: ('johndoe1@gmail.com', 115200, 'Chemistry & Biochemistry')
+     - Removed John Doe from database -
+
+     d. College Update Role, BCSM (Karl Saunders)
+         200
+         New Occupant Row: ('john', 'doe', 'johndoe1@gmail.com')
+         New PeopleDepartments Row: ('johndoe1@gmail.com', 115200, 'Chemistry & Biochemistry')
+     - Removed John Doe from database -
+
+     e. College Update Role, CENG (Robert Crockett)
+         Error.INVALID_PERMISSIONS
+
+     f. God Level (Doug Brewster)
+         200
+         New Occupant Row: ('john', 'doe', 'johndoe1@gmail.com')
+         New PeopleDepartments Row: ('johndoe1@gmail.com', 115200, 'Chemistry & Biochemistry')
+     - Removed John Doe from database -
+
+10. Room assignment to a person - adding Candace Mcnabb to Building 180, 205-00 (Belongs to Chem department)
+
+     a. College Update Permissions | BCSM (Karl Saunders)
+         200
+         All RoomOccupancies Rows: 
+             ('Candace', 'McNabb', '0206-A0', '180-0'),
+             ('Candace', 'McNabb', '0336-00', '180-0')
+         Latest log:  {'log_id': 212, 'user_email': 'ksaunders@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 5, 16, 26), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'ADD', 'ro_occupant_id': 263, 'ro_room_num': '0336-00', 'ro_building_id': '180-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+     - Remove Building 180, 465-00 assignment -
+         Latest log:  {'log_id': 213, 'user_email': 'ksaunders@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 5, 16, 26), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 263, 'ro_room_num': '0336-00', 'ro_building_id': '180-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+         All RoomOccupancies Rows: 
+             ('Candace', 'McNabb', '0206-A0', '180-0')
+
+     b. Department Update Permissions | Chem (Candace Mcnabb)
+         200
+         All RoomOccupancies Rows: 
+             ('Candace', 'McNabb', '0206-A0', '180-0'),
+             ('Candace', 'McNabb', '0336-00', '180-0')
+         Latest log:  {'log_id': 214, 'user_email': 'cmcnabb@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 5, 16, 27), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'ADD', 'ro_occupant_id': 263, 'ro_room_num': '0336-00', 'ro_building_id': '180-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+     - Remove Building 180, 465-00 assignment -
+         Latest log:  {'log_id': 215, 'user_email': 'cmcnabb@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 5, 16, 27), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 263, 'ro_room_num': '0336-00', 'ro_building_id': '180-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+         All RoomOccupancies Rows: 
+             ('Candace', 'McNabb', '0206-A0', '180-0')
+
+     c. Department Update Permissions | Bio (Michael Black)
+         Error.INVALID_PERMISSIONS
+         All RoomOccupancies Rows: 
+             ('Candace', 'McNabb', '0206-A0', '180-0')
+         Latest log:  {'log_id': 215, 'user_email': 'cmcnabb@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 5, 16, 27), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 263, 'ro_room_num': '0336-00', 'ro_building_id': '180-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+         All RoomOccupancies Rows: 
+             ('Candace', 'McNabb', '0206-A0', '180-0')
+
+     d. God Level Permissions | (Doug Brewster)
+         200
+         All RoomOccupancies Rows: 
+             ('Candace', 'McNabb', '0206-A0', '180-0'),
+             ('Candace', 'McNabb', '0336-00', '180-0')
+         Latest log:  {'log_id': 216, 'user_email': 'dbrewster@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 5, 16, 28), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'ADD', 'ro_occupant_id': 263, 'ro_room_num': '0336-00', 'ro_building_id': '180-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+     - Remove Building 180, 465-00 assignment -
+         Latest log:  {'log_id': 217, 'user_email': 'dbrewster@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 5, 16, 29), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 263, 'ro_room_num': '0336-00', 'ro_building_id': '180-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+         All RoomOccupancies Rows: 
+             ('Candace', 'McNabb', '0206-A0', '180-0')
+
+13. Duplicate Entries using Admin account
+
+     Adding employee Michael Black (unique identifier is his email: Michael_Black@calpoly.edu)
+         Error.DUPLICATE_PRIMARY_KEY_FAILURE

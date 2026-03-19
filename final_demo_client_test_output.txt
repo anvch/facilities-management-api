@@ -74,7 +74,7 @@ DATA RETRIEVAL
 
 5. List of Employees 
 
-     Admin account | Math department
+     Admin account | Biological Sciences department
          {
              'occupant_id': 2,
              'full_name': 'Nikki Adams',
@@ -139,9 +139,9 @@ DATA RETRIEVAL
              ('Michael', 'Black', '0274-00', '033-0'),
              ('Michael', 'Black', '0389-00', '033-0'),
              ('Michael', 'Black', '0465-00', '033-0')
-         Latest log:  {'log_id': 146, 'user_email': 'ksaunders@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 1, 52, 29), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'ADD', 'ro_occupant_id': 27, 'ro_room_num': '0465-00', 'ro_building_id': '033-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+         Latest log:  {'log_id': 182, 'user_email': 'ksaunders@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 5, 9, 51), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'ADD', 'ro_occupant_id': 27, 'ro_room_num': '0465-00', 'ro_building_id': '033-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
      - Remove Building 33, 465-00 assignment -
-         Latest log:  {'log_id': 147, 'user_email': 'ksaunders@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 1, 52, 29), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 27, 'ro_room_num': '0465-00', 'ro_building_id': '033-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+         Latest log:  {'log_id': 183, 'user_email': 'ksaunders@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 5, 9, 51), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 27, 'ro_room_num': '0465-00', 'ro_building_id': '033-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
          All RoomOccupancies Rows: 
              ('Michael', 'Black', '0274-00', '033-0'),
              ('Michael', 'Black', '0389-00', '033-0')
@@ -152,9 +152,9 @@ DATA RETRIEVAL
              ('Michael', 'Black', '0274-00', '033-0'),
              ('Michael', 'Black', '0389-00', '033-0'),
              ('Michael', 'Black', '0465-00', '033-0')
-         Latest log:  {'log_id': 148, 'user_email': 'mblack@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 1, 52, 30), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'ADD', 'ro_occupant_id': 27, 'ro_room_num': '0465-00', 'ro_building_id': '033-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+         Latest log:  {'log_id': 184, 'user_email': 'mblack@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 5, 9, 52), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'ADD', 'ro_occupant_id': 27, 'ro_room_num': '0465-00', 'ro_building_id': '033-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
      - Remove Building 33, 465-00 assignment -
-         Latest log:  {'log_id': 149, 'user_email': 'mblack@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 1, 52, 30), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 27, 'ro_room_num': '0465-00', 'ro_building_id': '033-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+         Latest log:  {'log_id': 185, 'user_email': 'mblack@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 5, 9, 52), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 27, 'ro_room_num': '0465-00', 'ro_building_id': '033-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
          All RoomOccupancies Rows: 
              ('Michael', 'Black', '0274-00', '033-0'),
              ('Michael', 'Black', '0389-00', '033-0')
@@ -164,7 +164,7 @@ DATA RETRIEVAL
          All RoomOccupancies Rows: 
              ('Michael', 'Black', '0274-00', '033-0'),
              ('Michael', 'Black', '0389-00', '033-0')
-         Latest log:  {'log_id': 149, 'user_email': 'mblack@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 1, 52, 30), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 27, 'ro_room_num': '0465-00', 'ro_building_id': '033-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+         Latest log:  {'log_id': 185, 'user_email': 'mblack@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 5, 9, 52), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 27, 'ro_room_num': '0465-00', 'ro_building_id': '033-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
          All RoomOccupancies Rows: 
              ('Michael', 'Black', '0274-00', '033-0'),
              ('Michael', 'Black', '0389-00', '033-0')
@@ -175,9 +175,9 @@ DATA RETRIEVAL
              ('Michael', 'Black', '0274-00', '033-0'),
              ('Michael', 'Black', '0389-00', '033-0'),
              ('Michael', 'Black', '0465-00', '033-0')
-         Latest log:  {'log_id': 150, 'user_email': 'dbrewster@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 1, 52, 31), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'ADD', 'ro_occupant_id': 27, 'ro_room_num': '0465-00', 'ro_building_id': '033-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+         Latest log:  {'log_id': 186, 'user_email': 'dbrewster@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 5, 9, 53), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'ADD', 'ro_occupant_id': 27, 'ro_room_num': '0465-00', 'ro_building_id': '033-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
      - Remove Building 33, 465-00 assignment -
-         Latest log:  {'log_id': 151, 'user_email': 'ksaunders@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 1, 52, 32), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 27, 'ro_room_num': '0465-00', 'ro_building_id': '033-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+         Latest log:  {'log_id': 187, 'user_email': 'ksaunders@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 5, 9, 54), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 27, 'ro_room_num': '0465-00', 'ro_building_id': '033-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
          All RoomOccupancies Rows: 
              ('Michael', 'Black', '0274-00', '033-0'),
              ('Michael', 'Black', '0389-00', '033-0')

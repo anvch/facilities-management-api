@@ -1,6 +1,6 @@
 from final_demo_api import *
 import sys
-with open("final_demo_client_test_output.txt","w") as f:
+with open("final_demo_instructor_test_output.txt","w") as f:
     pass
 def employee_pretty_print(employees):
     if not isinstance(employees, list):
@@ -37,7 +37,7 @@ def csv_pretty_print(csv_data):
 
 
 
-sys.stdout = open("final_demo_client_test_output.txt","a")
+sys.stdout = open("final_demo_instructor_test_output.txt","a")
 
 print(header_string("DATA RETRIEVAL"))
 print("1. List of Departments")
@@ -61,14 +61,14 @@ print(label_result_format('Admin account | Biological Sciences department',emplo
 
 with get_connection() as conn1:
     with conn1.cursor() as cursor1:
-        print("\n9. Addition of an Employee - adding users to Bio Sci")
-        print(label_result_format('a. College View Role | BCSM (Sarah Carney)',add_employee('scarney','jane','doe','janedoe1@gmail.com','lecturer',115100)))
-        print(label_result_format('b. Department Update Role | Chem dept (Candance Mcnabb)',add_employee('cmcnabb','jane','doe','janedoe1@gmail.com','lecturer',115100)))
-        print(label_result_format('c. Department Update Role | Bio Sci dept (Michael Black)',add_employee('mblack','jane','doe','janedoe1@gmail.com','lecturer',115100)))
+        print("\n9. Addition of an Employee - adding John Doe to Chem Dept")
+        print(label_result_format('a. College View Role | BCSM (Sarah Carney)',add_employee('scarney','john','doe','johndoe1@gmail.com','lecturer',115200)))
+        print(label_result_format('c. Department Update Role | Bio Sci dept (Michael Black)',add_employee('mblack','john','doe','johndoe1@gmail.com','lecturer',115200)))
+        print(label_result_format('b. Department Update Role | Chem dept (Candance Mcnabb)',add_employee('cmcnabb','john','doe','johndoe1@gmail.com','lecturer',115200)))
         cursor1.execute("""
                         SELECT first_name,last_name,email
                         FROM Occupants O
-                        WHERE O.email = 'janedoe1@gmail.com'""")
+                        WHERE O.email = 'johndoe1@gmail.com'""")
         print(result_spacing_format("New Occupant Row: {}".format(cursor1.fetchone())))
 
         cursor1.execute("""
@@ -76,50 +76,24 @@ with get_connection() as conn1:
                         FROM PeopleDepartments PD
                                  LEFT JOIN Occupants O on O.id = PD.occupant_id
                                  LEFT JOIN Departments D ON PD.department_id = D.id
-                        WHERE O.email = 'janedoe1@gmail.com'""")
+                        WHERE O.email = 'johndoe1@gmail.com'""")
 
         print(result_spacing_format("New PeopleDepartments Row: {}").format(cursor1.fetchone()))
 
         cursor1.execute("""
         DELETE PD FROM PeopleDepartments  AS PD
         INNER JOIN Occupants AS O ON PD.occupant_id = O.id
-        WHERE O.email = %s;""", ('janedoe1@gmail.com',))
+        WHERE O.email = %s;""", ('johndoe1@gmail.com',))
         cursor1.execute("""
                         DELETE FROM Occupants WHERE email = %s
-                        """,('janedoe1@gmail.com',))
+                        """,('johndoe1@gmail.com',))
         conn1.commit()
-        print("     - Removed Jane Doe from database -")
-        print(label_result_format('d. College Update Role, BCSM (Karl Saunders)',add_employee('ksaunders','jane','doe','janedoe1@gmail.com','lecturer',115100)))
-        cursor1.execute("""
-        SELECT first_name,last_name,email
-        FROM Occupants O 
-        WHERE O.email = 'janedoe1@gmail.com'""")
-        print(result_spacing_format("New Occupant Row: {}".format(cursor1.fetchone())))
-
-        cursor1.execute("""
-                        SELECT email, department_id, D.name
-                        FROM PeopleDepartments PD
-                        LEFT JOIN Occupants O on O.id = PD.occupant_id
-                        LEFT JOIN Departments D ON PD.department_id = D.id
-                        WHERE O.email = 'janedoe1@gmail.com'""")
-
-        print(result_spacing_format("New PeopleDepartments Row: {}").format(cursor1.fetchone()))
-
-        cursor1.execute("""
-        DELETE PD FROM PeopleDepartments  AS PD
-        INNER JOIN Occupants AS O ON PD.occupant_id = O.id
-        WHERE O.email = %s;""", ('janedoe1@gmail.com',))
-        cursor1.execute("""
-                        DELETE FROM Occupants WHERE email = %s
-                        """,('janedoe1@gmail.com',))
-        conn1.commit()
-        print("     - Removed Jane Doe from database -")
-        print(label_result_format('e. College Update Role, CENG (Robert Crockett)',add_employee('rcrockett','jane','doe','janedoe1@gmail.com','lecturer',115100)))
-        print(label_result_format('f. God Level (Doug Brewster)',add_employee('dbrewster','jane','doe','janedoe1@gmail.com','lecturer',115100)))
+        print("     - Removed John Doe from database -")
+        print(label_result_format('d. College Update Role, BCSM (Karl Saunders)',add_employee('ksaunders','john','doe','johndoe1@gmail.com','lecturer',115200)))
         cursor1.execute("""
                         SELECT first_name,last_name,email
                         FROM Occupants O
-                        WHERE O.email = 'janedoe1@gmail.com'""")
+                        WHERE O.email = 'johndoe1@gmail.com'""")
         print(result_spacing_format("New Occupant Row: {}".format(cursor1.fetchone())))
 
         cursor1.execute("""
@@ -127,71 +101,96 @@ with get_connection() as conn1:
                         FROM PeopleDepartments PD
                                  LEFT JOIN Occupants O on O.id = PD.occupant_id
                                  LEFT JOIN Departments D ON PD.department_id = D.id
-                        WHERE O.email = 'janedoe1@gmail.com'""")
+                        WHERE O.email = 'johndoe1@gmail.com'""")
 
         print(result_spacing_format("New PeopleDepartments Row: {}").format(cursor1.fetchone()))
 
         cursor1.execute("""
         DELETE PD FROM PeopleDepartments  AS PD
         INNER JOIN Occupants AS O ON PD.occupant_id = O.id
-        WHERE O.email = %s;""", ('janedoe1@gmail.com',))
+        WHERE O.email = %s;""", ('johndoe1@gmail.com',))
         cursor1.execute("""
                         DELETE FROM Occupants WHERE email = %s
-                        """,('janedoe1@gmail.com',))
+                        """,('johndoe1@gmail.com',))
         conn1.commit()
-        print("     - Removed Jane Doe from database -")
+        print("     - Removed John Doe from database -")
+        print(label_result_format('e. College Update Role, CENG (Robert Crockett)',add_employee('rcrockett','john','doe','johndoe1@gmail.com','lecturer',115200)))
+        print(label_result_format('f. God Level (Doug Brewster)',add_employee('dbrewster','john','doe','johndoe1@gmail.com','lecturer',115200)))
+        cursor1.execute("""
+                        SELECT first_name,last_name,email
+                        FROM Occupants O
+                        WHERE O.email = 'johndoe1@gmail.com'""")
+        print(result_spacing_format("New Occupant Row: {}".format(cursor1.fetchone())))
+
+        cursor1.execute("""
+                        SELECT email, department_id, D.name
+                        FROM PeopleDepartments PD
+                                 LEFT JOIN Occupants O on O.id = PD.occupant_id
+                                 LEFT JOIN Departments D ON PD.department_id = D.id
+                        WHERE O.email = 'johndoe1@gmail.com'""")
+
+        print(result_spacing_format("New PeopleDepartments Row: {}").format(cursor1.fetchone()))
+
+        cursor1.execute("""
+        DELETE PD FROM PeopleDepartments  AS PD
+        INNER JOIN Occupants AS O ON PD.occupant_id = O.id
+        WHERE O.email = %s;""", ('johndoe1@gmail.com',))
+        cursor1.execute("""
+                        DELETE FROM Occupants WHERE email = %s
+                        """,('johndoe1@gmail.com',))
+        conn1.commit()
+        print("     - Removed John Doe from database -")
+
+
 with get_connection() as conn1:
     with conn1.cursor() as cursor1:
-        print("\n10. Room assignment to a person - adding Michael Black to Building 33, 465-00 (Belongs to Bio Sci department)")
-        print(label_result_format('a. College Update Permissions | BCSM (Karl Saunders)',assign_room('ksaunders',27,'033-0','0465-00')))
-        cursor1.execute("""
-                        SELECT first_name,last_name,room_num,building_id
-                        FROM RoomOccupancies AS RO
-                        LEFT JOIN Occupants AS O on O.id = RO.occupant_id
-                        WHERE RO.occupant_id = 27""")
-        print(result_spacing_format("All RoomOccupancies Rows: {}".format(csv_pretty_print(cursor1.fetchall()))))
-        print_latest_log()
-        conn1.commit()
-        print("     - Remove Building 33, 465-00 assignment -")
-        remove_room_assignment('ksaunders',27,'033-0','0465-00')
-        print_latest_log()
+        print("\n10. Room assignment to a person - adding Candace Mcnabb to Building 180, 205-00 (Belongs to Chem department)")
+        print(label_result_format('a. College Update Permissions | BCSM (Karl Saunders)',assign_room('ksaunders',263,'180-0','0336-00')))
         cursor1.execute("""
                         SELECT first_name,last_name,room_num,building_id
                         FROM RoomOccupancies AS RO
                                  LEFT JOIN Occupants AS O on O.id = RO.occupant_id
-                        WHERE RO.occupant_id = 27""")
-        print(result_spacing_format("All RoomOccupancies Rows: {}".format(csv_pretty_print(cursor1.fetchall()))))
-        conn1.commit()
-
-
-
-
-        print(label_result_format('b. Department Update Permissions | Bio Sci (Michael Black)',assign_room('mblack',27,'033-0','0465-00')))
-        cursor1.execute("""
-                        SELECT first_name,last_name,room_num,building_id
-                        FROM RoomOccupancies AS RO
-                                 LEFT JOIN Occupants AS O on O.id = RO.occupant_id
-                        WHERE RO.occupant_id = 27""")
+                        WHERE RO.occupant_id = 263""")
         print(result_spacing_format("All RoomOccupancies Rows: {}".format(csv_pretty_print(cursor1.fetchall()))))
         print_latest_log()
         conn1.commit()
-        print("     - Remove Building 33, 465-00 assignment -")
-        remove_room_assignment('mblack',27,'033-0','0465-00')
+        print("     - Remove Building 180, 465-00 assignment -")
+        remove_room_assignment('ksaunders',263,'180-0','0336-00')
         print_latest_log()
         cursor1.execute("""
                         SELECT first_name,last_name,room_num,building_id
                         FROM RoomOccupancies AS RO
                                  LEFT JOIN Occupants AS O on O.id = RO.occupant_id
-                        WHERE RO.occupant_id = 27""")
+                        WHERE RO.occupant_id = 263""")
         print(result_spacing_format("All RoomOccupancies Rows: {}".format(csv_pretty_print(cursor1.fetchall()))))
         conn1.commit()
 
-        print(label_result_format('c. Department Update Permissions | Dean\'s office (Adrienne Seiler)',assign_room('aseiler',27,'033-0','0465-00')))
+        print(label_result_format('b. Department Update Permissions | Chem (Candace Mcnabb)',assign_room('cmcnabb',263,'180-0','0336-00')))
         cursor1.execute("""
                         SELECT first_name,last_name,room_num,building_id
                         FROM RoomOccupancies AS RO
                                  LEFT JOIN Occupants AS O on O.id = RO.occupant_id
-                        WHERE RO.occupant_id = 27""")
+                        WHERE RO.occupant_id = 263""")
+        print(result_spacing_format("All RoomOccupancies Rows: {}".format(csv_pretty_print(cursor1.fetchall()))))
+        print_latest_log()
+        conn1.commit()
+        print("     - Remove Building 180, 465-00 assignment -")
+        remove_room_assignment('cmcnabb',263,'180-0','0336-00')
+        print_latest_log()
+        cursor1.execute("""
+                        SELECT first_name,last_name,room_num,building_id
+                        FROM RoomOccupancies AS RO
+                                 LEFT JOIN Occupants AS O on O.id = RO.occupant_id
+                        WHERE RO.occupant_id = 263""")
+        print(result_spacing_format("All RoomOccupancies Rows: {}".format(csv_pretty_print(cursor1.fetchall()))))
+        conn1.commit()
+
+        print(label_result_format('c. Department Update Permissions | Bio (Michael Black)',assign_room('mblack',263,'180-0','0336-00')))
+        cursor1.execute("""
+                        SELECT first_name,last_name,room_num,building_id
+                        FROM RoomOccupancies AS RO
+                                 LEFT JOIN Occupants AS O on O.id = RO.occupant_id
+                        WHERE RO.occupant_id = 263""")
         print(result_spacing_format("All RoomOccupancies Rows: {}".format(csv_pretty_print(cursor1.fetchall()))))
         print_latest_log()
         conn1.commit()
@@ -199,30 +198,30 @@ with get_connection() as conn1:
                         SELECT first_name,last_name,room_num,building_id
                         FROM RoomOccupancies AS RO
                                  LEFT JOIN Occupants AS O on O.id = RO.occupant_id
-                        WHERE RO.occupant_id = 27""")
+                        WHERE RO.occupant_id = 263""")
         print(result_spacing_format("All RoomOccupancies Rows: {}".format(csv_pretty_print(cursor1.fetchall()))))
         conn1.commit()
 
 
 
-        print(label_result_format('d. God Level Permissions | (Doug Brewster)',assign_room('dbrewster',27,'033-0','0465-00')))
+        print(label_result_format('d. God Level Permissions | (Doug Brewster)',assign_room('dbrewster',263,'180-0','0336-00')))
         cursor1.execute("""
                         SELECT first_name,last_name,room_num,building_id
                         FROM RoomOccupancies AS RO
                                  LEFT JOIN Occupants AS O on O.id = RO.occupant_id
-                        WHERE RO.occupant_id = 27""")
+                        WHERE RO.occupant_id = 263""")
         print(result_spacing_format("All RoomOccupancies Rows: {}".format(csv_pretty_print(cursor1.fetchall()))))
         print_latest_log()
         conn1.commit()
 
-        print("     - Remove Building 33, 465-00 assignment -")
-        remove_room_assignment('ksaunders',27,'033-0','0465-00')
+        print("     - Remove Building 180, 465-00 assignment -")
+        remove_room_assignment('dbrewster',263,'180-0','0336-00')
         print_latest_log()
         cursor1.execute("""
                         SELECT first_name,last_name,room_num,building_id
                         FROM RoomOccupancies AS RO
                                  LEFT JOIN Occupants AS O on O.id = RO.occupant_id
-                        WHERE RO.occupant_id = 27""")
+                        WHERE RO.occupant_id = 263""")
         print(result_spacing_format("All RoomOccupancies Rows: {}".format(csv_pretty_print(cursor1.fetchall()))))
 
 print("\n13. Duplicate Entries using Admin account")

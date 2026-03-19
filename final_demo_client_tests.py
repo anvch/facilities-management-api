@@ -241,6 +241,71 @@ with get_connection() as conn1:
                         WHERE RO.occupant_id = 27""")
         print(result_spacing_format("All RoomOccupancies Rows: {}".format(csv_pretty_print(cursor1.fetchall()))))
 
+
+
+with get_connection() as conn2:
+    with conn2.cursor() as cursor2:
+        # Department room assignment. Select a BCSM department, and a room that is not assigned to it.  
+        print("\n11. Room assignment to a department - adding Chemistry & Biochemistry (115200) deparment to Building 33, 0151-00 (Belongs to Bio Sci department)")
+        cursor2.execute("""
+                SELECT department_id
+                FROM Rooms AS R
+                WHERE R.building_id = '033-0' AND room_num = '0151-00'""")
+        print("\n\t Department currently assigned to Building 33, 0151-00: ", cursor2.fetchone()[0])
+        conn2.commit()
+
+        # Using an Administrative account, (re-)assign the room to the selected department. Confirm assignment. Re-assign the room back to the original department.  
+        print('\t a. God Level Permissions | BCSM (Doug Brewster)')
+        print('\t\t Assigning Building 33, 0151-00 to Department 115200...')
+        department_assignment('dbrewster',115200,'033-0','0151-00')
+        print_latest_log()
+        cursor2.execute("""
+                SELECT department_id
+                FROM Rooms AS R
+                WHERE R.building_id = '033-0' AND room_num = '0151-00'""")
+        print("\t\t Department currently assigned to Building 33, 0151-00: ", cursor2.fetchone()[0])
+        conn2.commit()
+        print("\t\t Reassigning back to department 115100")
+        department_assignment('dbrewster',115100,'033-0','0151-00')
+
+        cursor2.execute("""
+                SELECT department_id
+                FROM Rooms AS R
+                WHERE R.building_id = '033-0' AND room_num = '0151-00'""")
+        print("\t\t Department currently assigned to Building 33, 0151-00: ", cursor2.fetchone()[0])
+        conn2.commit()
+
+        # Using a BCSM College Update account, (re-)assign the room to the selected department. Confirm assignment. Re-assign the room back to the original department.  
+        print('\n\t b. College Update Permissions | BCSM (Karl Saunders)')
+        print('\t\t Assigning Building 33, 0151-00 to Department 115200...')
+        department_assignment('ksaunders',115200,'033-0','0151-00')
+        print_latest_log()
+        cursor2.execute("""
+                SELECT department_id
+                FROM Rooms AS R
+                WHERE R.building_id = '033-0' AND room_num = '0151-00'""")
+        print("\t\t Department currently assigned to Building 33, 0151-00: ", cursor2.fetchone()[0])
+        conn2.commit()
+        print("\t\t Reassigning back to department 115100")
+        department_assignment('ksaunders',115100,'033-0','0151-00')
+
+        cursor2.execute("""
+                SELECT department_id
+                FROM Rooms AS R
+                WHERE R.building_id = '033-0' AND room_num = '0151-00'""")
+        print("\t\t Department currently assigned to Building 33, 0151-00: ", cursor2.fetchone()[0])
+        conn2.commit()
+ 
+        # Using a College Update account affiliated with a different college, (re-)assign the room to the selected department. Show output (should raise permission error)
+        print('\n\t c. College Update Permissions | CENG (Robert Crockett)')
+        print('\t\t Attempting to assign Building 33, 0151-00 to Department 115200...')
+        print('\t\t ', department_assignment('rcrockett',115200,'033-0','0151-00'))
+
+        # Using a BCSM College View account, (re-)assign the room to the selected department. Show output (should raise permission error)
+        print('\n\t d. College View Permissions | BCSM (Sarah Carney)')
+        print('\t\t Attempting to assign Building 33, 0151-00 to Department 115200...')
+        print('\t\t ', department_assignment('scarney',115200,'033-0','0151-00'))
+
 print("\n13. Duplicate Entries using Admin account")
 
 print(label_result_format("Adding employee Michael Black (unique identifier is his email: Michael_Black@calpoly.edu)",add_employee('dbrewster','Michael','Black','Michael_Black@calpoly.edu','lecturer',115100)))

@@ -1,8 +1,7 @@
 import mysql.connector
-
 from db import get_connection
-
 from enum import Enum
+from pprint import pprint, pformat
 
 class Error(Enum):
     DUPLICATE_PRIMARY_KEY_FAILURE = 300
@@ -790,9 +789,14 @@ def print_latest_log():
     row = cursor.fetchone()
 
     if row:
-        print("         Latest log: ", row)
+        pretty_str = pformat(row, indent=1)
+        print("\t\t Latest log: ", )
+        print("\t\t  " + pretty_str.replace("\n", "\n\t\t  "))
+
     else:
         print("No logs found")
 
     cursor.close()
     conn.close()
+    
+    return row

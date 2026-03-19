@@ -401,6 +401,28 @@ def get_employee_info(user_id, employee_input):
 
             return employee
 
+# 8. Equipment Locations (getEquipmentLocations)
+
+def get_equipment_locations(user_id, equipment_name):
+
+    if not validate_permission(user_id, PermissionLevel.DEPARTMENT_VIEW):
+        return Error.INVALID_PERMISSIONS
+
+    with get_connection() as conn:
+        with conn.cursor(dictionary = True) as cursor:
+
+            cursor.execute("""
+            SELECT r.building_id, r.room_num, o.quantity AS equipment_count
+            FROM RoomEquipmentOwnerships o 
+            JOIN Rooms r 
+            ON o.room_num = r.room_num AND o.building_id = r.building_id
+            JOIN Equipment e
+            ON o.equipment_id = e.id
+            WHERE e.equipment_name = %s 
+            """, (equipment_name,))
+
+            return cursor.fetchall()
+
 
 # -----------------------------------------------
 # DATA MANIPULATION

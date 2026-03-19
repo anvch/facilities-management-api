@@ -72,7 +72,8 @@ print(label_result_format('c. College View Permissions (Wrong College) | CENG (A
 
 print("\n7. Equipment Locations ")
 # Select a type of equipment. Request all known locations of this type of equipment using an Administrator account. Show output.
-
+print("\n   Finding all locations of an ULT Freezer")
+print(label_result_format('a. God Level Permissions | BCSM (Doug Brewster)', get_equipment_locations('dbrewster', "ULT Freezer")))
 
 with get_connection() as conn1:
     with conn1.cursor() as cursor1:

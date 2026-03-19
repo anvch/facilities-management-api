@@ -1,7 +1,7 @@
 
-----------------------------
+--------------
 DATA RETRIEVAL
-----------------------------
+--------------
 
 1. List of Departments
 
@@ -27,12 +27,14 @@ DATA RETRIEVAL
          Design & Fabrication Fácil,
          School of Education,
          Unknown Department
+
 2. List of FloorPlans (image_path, building_id, floor_num, building_name)
 
      a. All floor plans
          ('building-053-0_science-north_1.svg', '053-0', 1, 'Science North'),
          ('building-053-0_science-north_2.svg', '053-0', 2, 'Science North'),
          ('building033floor4.png', '033-0', 3, 'Clyde P. Fisher Science Hall')
+
 3. List of Rooms (building_id, room_num, 4 bounding fields, department_id)
 
      a. Rooms in Building 53, floor 2
@@ -55,6 +57,7 @@ DATA RETRIEVAL
          ('053-0', '0218-00', 352, 211, 387, 238, 115100),
          ('053-0', '0219-00', 351, 239, 389, 266, 115100),
          ('053-0', '0220-00', 352, 266, 388, 292, 115100)
+
 4. Room Selection (building_id, room_num)
 
      a. Building 53 floor 2, Room 203 | Pixel coordinate 340,404
@@ -68,6 +71,7 @@ DATA RETRIEVAL
 
      b. Building 2 floor 1 | Pixel coordinate 0,0
          
+
 5. List of Employees 
 
      Admin account | Math department
@@ -628,31 +632,88 @@ DATA RETRIEVAL
              'rooms': '025-0-0333-00',
              'total_square_footage': 107.0
          }
+
 9. Addition of an Employee - adding users to Bio Sci
 
-     a. College View Role, BCSM
+     a. College View Role | BCSM (Sarah Carney)
          Error.INVALID_PERMISSIONS
 
-     b. Department Update Role, Chem dept
+     b. Department Update Role | Chem dept (Candance Mcnabb)
          Error.INVALID_PERMISSIONS
 
-     c. Department Update Role, Bio Sci dept
+     c. Department Update Role | Bio Sci dept (Michael Black)
          200
          New Occupant Row: ('jane', 'doe', 'janedoe1@gmail.com')
          New PeopleDepartments Row: ('janedoe1@gmail.com', 115100, 'Biological Sciences')
-     -- Removed Jane Doe from database --
+     - Removed Jane Doe from database -
 
-     d. College Update Role, BCSM
+     d. College Update Role, BCSM (Karl Saunders)
          200
          New Occupant Row: ('jane', 'doe', 'janedoe1@gmail.com')
          New PeopleDepartments Row: ('janedoe1@gmail.com', 115100, 'Biological Sciences')
-     -- Removed Jane Doe from database --
+     - Removed Jane Doe from database -
 
-     e. College Update Role, CENG
+     e. College Update Role, CENG (Robert Crockett)
          Error.INVALID_PERMISSIONS
 
-     f. God Level
+     f. God Level (Doug Brewster)
          200
          New Occupant Row: ('jane', 'doe', 'janedoe1@gmail.com')
          New PeopleDepartments Row: ('janedoe1@gmail.com', 115100, 'Biological Sciences')
-     -- Removed Jane Doe from database --
+     - Removed Jane Doe from database -
+
+10. Room assignment to a person - adding Michael Black to Building 33, 465-00 (Belongs to Bio Sci department)
+
+     a. College Update Permissions | BCSM (Karl Saunders)
+         200
+         All RoomOccupancies Rows: 
+             ('Michael', 'Black', '0274-00', '033-0'),
+             ('Michael', 'Black', '0389-00', '033-0'),
+             ('Michael', 'Black', '0465-00', '033-0')
+         Latest log:  {'log_id': 128, 'user_email': 'ksaunders@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 1, 43, 10), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'ADD', 'ro_occupant_id': 27, 'ro_room_num': '0465-00', 'ro_building_id': '033-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+     - Remove Building 33, 465-00 assignment -
+         Latest log:  {'log_id': 129, 'user_email': 'ksaunders@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 1, 43, 11), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 27, 'ro_room_num': '0465-00', 'ro_building_id': '033-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+         All RoomOccupancies Rows: 
+             ('Michael', 'Black', '0274-00', '033-0'),
+             ('Michael', 'Black', '0389-00', '033-0')
+
+     b. Department Update Permissions | Bio Sci (Michael Black)
+         200
+         All RoomOccupancies Rows: 
+             ('Michael', 'Black', '0274-00', '033-0'),
+             ('Michael', 'Black', '0389-00', '033-0'),
+             ('Michael', 'Black', '0465-00', '033-0')
+         Latest log:  {'log_id': 130, 'user_email': 'mblack@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 1, 43, 11), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'ADD', 'ro_occupant_id': 27, 'ro_room_num': '0465-00', 'ro_building_id': '033-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+     - Remove Building 33, 465-00 assignment -
+         Latest log:  {'log_id': 131, 'user_email': 'mblack@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 1, 43, 12), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 27, 'ro_room_num': '0465-00', 'ro_building_id': '033-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+         All RoomOccupancies Rows: 
+             ('Michael', 'Black', '0274-00', '033-0'),
+             ('Michael', 'Black', '0389-00', '033-0')
+
+     c. Department Update Permissions | Dean's office (Adrienne Seiler)
+         Error.INVALID_PERMISSIONS
+         All RoomOccupancies Rows: 
+             ('Michael', 'Black', '0274-00', '033-0'),
+             ('Michael', 'Black', '0389-00', '033-0')
+         Latest log:  {'log_id': 131, 'user_email': 'mblack@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 1, 43, 12), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 27, 'ro_room_num': '0465-00', 'ro_building_id': '033-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+         All RoomOccupancies Rows: 
+             ('Michael', 'Black', '0274-00', '033-0'),
+             ('Michael', 'Black', '0389-00', '033-0')
+
+     d. God Level Permissions | (Doug Brewster)
+         200
+         All RoomOccupancies Rows: 
+             ('Michael', 'Black', '0274-00', '033-0'),
+             ('Michael', 'Black', '0389-00', '033-0'),
+             ('Michael', 'Black', '0465-00', '033-0')
+         Latest log:  {'log_id': 132, 'user_email': 'dbrewster@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 1, 43, 13), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'ADD', 'ro_occupant_id': 27, 'ro_room_num': '0465-00', 'ro_building_id': '033-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+     - Remove Building 33, 465-00 assignment -
+         Latest log:  {'log_id': 133, 'user_email': 'ksaunders@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 1, 43, 13), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 27, 'ro_room_num': '0465-00', 'ro_building_id': '033-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+         All RoomOccupancies Rows: 
+             ('Michael', 'Black', '0274-00', '033-0'),
+             ('Michael', 'Black', '0389-00', '033-0')
+
+13. Duplicate Entries using Admin account
+
+     Adding employee Michael Black (unique identifier is his email: Michael_Black@calpoly.edu)
+         Error.DUPLICATE_PRIMARY_KEY_FAILURE

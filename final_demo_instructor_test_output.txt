@@ -226,9 +226,45 @@ DATA RETRIEVAL
          All RoomOccupancies Rows: 
              ('Candace', 'McNabb', '0206-A0', '180-0'),
              ('Candace', 'McNabb', '0336-00', '180-0')
-         Latest log:  {'log_id': 483, 'user_email': 'ksaunders@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 6, 58, 23), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'ADD', 'ro_occupant_id': 263, 'ro_room_num': '0336-00', 'ro_building_id': '180-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+		 Latest log: 
+		  {'a_is_log_in': None,
+		   'e_building_id': None,
+		   'e_equipment_id': None,
+		   'e_new_quantity': None,
+		   'e_old_quantity': None,
+		   'e_room_num': None,
+		   'log_id': 523,
+		   'log_type': 'ROOM=DEPARTMENT',
+		   'rd_building_id': None,
+		   'rd_new_department_id': None,
+		   'rd_prev_department_id': None,
+		   'rd_room_num': None,
+		   'ro_add_or_remove': 'ADD',
+		   'ro_building_id': '180-0',
+		   'ro_occupant_id': 263,
+		   'ro_room_num': '0336-00',
+		   'time_altered': datetime.datetime(2026, 3, 19, 7, 21, 4),
+		   'user_email': 'ksaunders@gmail.com'}
      - Remove Building 180, 465-00 assignment -
-         Latest log:  {'log_id': 484, 'user_email': 'ksaunders@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 6, 58, 24), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 263, 'ro_room_num': '0336-00', 'ro_building_id': '180-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+		 Latest log: 
+		  {'a_is_log_in': None,
+		   'e_building_id': None,
+		   'e_equipment_id': None,
+		   'e_new_quantity': None,
+		   'e_old_quantity': None,
+		   'e_room_num': None,
+		   'log_id': 524,
+		   'log_type': 'ROOM=DEPARTMENT',
+		   'rd_building_id': None,
+		   'rd_new_department_id': None,
+		   'rd_prev_department_id': None,
+		   'rd_room_num': None,
+		   'ro_add_or_remove': 'REMOVE',
+		   'ro_building_id': '180-0',
+		   'ro_occupant_id': 263,
+		   'ro_room_num': '0336-00',
+		   'time_altered': datetime.datetime(2026, 3, 19, 7, 21, 4),
+		   'user_email': 'ksaunders@gmail.com'}
          All RoomOccupancies Rows: 
              ('Candace', 'McNabb', '0206-A0', '180-0')
 
@@ -237,9 +273,45 @@ DATA RETRIEVAL
          All RoomOccupancies Rows: 
              ('Candace', 'McNabb', '0206-A0', '180-0'),
              ('Candace', 'McNabb', '0336-00', '180-0')
-         Latest log:  {'log_id': 485, 'user_email': 'cmcnabb@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 6, 58, 25), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'ADD', 'ro_occupant_id': 263, 'ro_room_num': '0336-00', 'ro_building_id': '180-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+		 Latest log: 
+		  {'a_is_log_in': None,
+		   'e_building_id': None,
+		   'e_equipment_id': None,
+		   'e_new_quantity': None,
+		   'e_old_quantity': None,
+		   'e_room_num': None,
+		   'log_id': 525,
+		   'log_type': 'ROOM=DEPARTMENT',
+		   'rd_building_id': None,
+		   'rd_new_department_id': None,
+		   'rd_prev_department_id': None,
+		   'rd_room_num': None,
+		   'ro_add_or_remove': 'ADD',
+		   'ro_building_id': '180-0',
+		   'ro_occupant_id': 263,
+		   'ro_room_num': '0336-00',
+		   'time_altered': datetime.datetime(2026, 3, 19, 7, 21, 6),
+		   'user_email': 'cmcnabb@gmail.com'}
      - Remove Building 180, 465-00 assignment -
-         Latest log:  {'log_id': 486, 'user_email': 'cmcnabb@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 6, 58, 26), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 263, 'ro_room_num': '0336-00', 'ro_building_id': '180-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+		 Latest log: 
+		  {'a_is_log_in': None,
+		   'e_building_id': None,
+		   'e_equipment_id': None,
+		   'e_new_quantity': None,
+		   'e_old_quantity': None,
+		   'e_room_num': None,
+		   'log_id': 526,
+		   'log_type': 'ROOM=DEPARTMENT',
+		   'rd_building_id': None,
+		   'rd_new_department_id': None,
+		   'rd_prev_department_id': None,
+		   'rd_room_num': None,
+		   'ro_add_or_remove': 'REMOVE',
+		   'ro_building_id': '180-0',
+		   'ro_occupant_id': 263,
+		   'ro_room_num': '0336-00',
+		   'time_altered': datetime.datetime(2026, 3, 19, 7, 21, 7),
+		   'user_email': 'cmcnabb@gmail.com'}
          All RoomOccupancies Rows: 
              ('Candace', 'McNabb', '0206-A0', '180-0')
 
@@ -247,7 +319,25 @@ DATA RETRIEVAL
          Error.INVALID_PERMISSIONS
          All RoomOccupancies Rows: 
              ('Candace', 'McNabb', '0206-A0', '180-0')
-         Latest log:  {'log_id': 486, 'user_email': 'cmcnabb@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 6, 58, 26), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 263, 'ro_room_num': '0336-00', 'ro_building_id': '180-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+		 Latest log: 
+		  {'a_is_log_in': None,
+		   'e_building_id': None,
+		   'e_equipment_id': None,
+		   'e_new_quantity': None,
+		   'e_old_quantity': None,
+		   'e_room_num': None,
+		   'log_id': 526,
+		   'log_type': 'ROOM=DEPARTMENT',
+		   'rd_building_id': None,
+		   'rd_new_department_id': None,
+		   'rd_prev_department_id': None,
+		   'rd_room_num': None,
+		   'ro_add_or_remove': 'REMOVE',
+		   'ro_building_id': '180-0',
+		   'ro_occupant_id': 263,
+		   'ro_room_num': '0336-00',
+		   'time_altered': datetime.datetime(2026, 3, 19, 7, 21, 7),
+		   'user_email': 'cmcnabb@gmail.com'}
          All RoomOccupancies Rows: 
              ('Candace', 'McNabb', '0206-A0', '180-0')
 
@@ -256,9 +346,45 @@ DATA RETRIEVAL
          All RoomOccupancies Rows: 
              ('Candace', 'McNabb', '0206-A0', '180-0'),
              ('Candace', 'McNabb', '0336-00', '180-0')
-         Latest log:  {'log_id': 488, 'user_email': 'dbrewster@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 6, 58, 27), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'ADD', 'ro_occupant_id': 263, 'ro_room_num': '0336-00', 'ro_building_id': '180-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+		 Latest log: 
+		  {'a_is_log_in': None,
+		   'e_building_id': None,
+		   'e_equipment_id': None,
+		   'e_new_quantity': None,
+		   'e_old_quantity': None,
+		   'e_room_num': None,
+		   'log_id': 527,
+		   'log_type': 'ROOM=DEPARTMENT',
+		   'rd_building_id': None,
+		   'rd_new_department_id': None,
+		   'rd_prev_department_id': None,
+		   'rd_room_num': None,
+		   'ro_add_or_remove': 'ADD',
+		   'ro_building_id': '180-0',
+		   'ro_occupant_id': 263,
+		   'ro_room_num': '0336-00',
+		   'time_altered': datetime.datetime(2026, 3, 19, 7, 21, 7),
+		   'user_email': 'dbrewster@gmail.com'}
      - Remove Building 180, 465-00 assignment -
-         Latest log:  {'log_id': 489, 'user_email': 'dbrewster@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 6, 58, 27), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': None, 'rd_building_id': None, 'rd_prev_department_id': None, 'rd_new_department_id': None, 'ro_add_or_remove': 'REMOVE', 'ro_occupant_id': 263, 'ro_room_num': '0336-00', 'ro_building_id': '180-0', 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+		 Latest log: 
+		  {'a_is_log_in': None,
+		   'e_building_id': None,
+		   'e_equipment_id': None,
+		   'e_new_quantity': None,
+		   'e_old_quantity': None,
+		   'e_room_num': None,
+		   'log_id': 528,
+		   'log_type': 'ROOM=DEPARTMENT',
+		   'rd_building_id': None,
+		   'rd_new_department_id': None,
+		   'rd_prev_department_id': None,
+		   'rd_room_num': None,
+		   'ro_add_or_remove': 'REMOVE',
+		   'ro_building_id': '180-0',
+		   'ro_occupant_id': 263,
+		   'ro_room_num': '0336-00',
+		   'time_altered': datetime.datetime(2026, 3, 19, 7, 21, 8),
+		   'user_email': 'dbrewster@gmail.com'}
          All RoomOccupancies Rows: 
              ('Candace', 'McNabb', '0206-A0', '180-0')
 
@@ -267,14 +393,50 @@ DATA RETRIEVAL
 	 Department currently assigned to Building 2, 0104-00:  117600
 	 a. God Level Permissions | BCSM (Doug Brewster)
 		 Assigning Building 2, 0104-00 to Department 117508...
-         Latest log:  {'log_id': 490, 'user_email': 'dbrewster@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 6, 58, 28), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': '0104-00', 'rd_building_id': '002-0', 'rd_prev_department_id': 117600, 'rd_new_department_id': 117508, 'ro_add_or_remove': None, 'ro_occupant_id': None, 'ro_room_num': None, 'ro_building_id': None, 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+		 Latest log: 
+		  {'a_is_log_in': None,
+		   'e_building_id': None,
+		   'e_equipment_id': None,
+		   'e_new_quantity': None,
+		   'e_old_quantity': None,
+		   'e_room_num': None,
+		   'log_id': 529,
+		   'log_type': 'ROOM=DEPARTMENT',
+		   'rd_building_id': '002-0',
+		   'rd_new_department_id': 117508,
+		   'rd_prev_department_id': 117600,
+		   'rd_room_num': '0104-00',
+		   'ro_add_or_remove': None,
+		   'ro_building_id': None,
+		   'ro_occupant_id': None,
+		   'ro_room_num': None,
+		   'time_altered': datetime.datetime(2026, 3, 19, 7, 21, 10),
+		   'user_email': 'dbrewster@gmail.com'}
 		 Department currently assigned to Building 2, 0104-00:  117508
 		 Reassigning back to department 117600
 		 Department currently assigned to Building 2, 0104-00:  117600
 
 	 b. College Update Permissions | BCSM (Karl Saunders)
 		 Assigning Building 2, 0104-00 to Department 117508...
-         Latest log:  {'log_id': 492, 'user_email': 'ksaunders@gmail.com', 'time_altered': datetime.datetime(2026, 3, 19, 6, 58, 29), 'log_type': 'ROOM=DEPARTMENT', 'a_is_log_in': None, 'rd_room_num': '0104-00', 'rd_building_id': '002-0', 'rd_prev_department_id': 117600, 'rd_new_department_id': 117508, 'ro_add_or_remove': None, 'ro_occupant_id': None, 'ro_room_num': None, 'ro_building_id': None, 'e_equipment_id': None, 'e_room_num': None, 'e_building_id': None, 'e_old_quantity': None, 'e_new_quantity': None}
+		 Latest log: 
+		  {'a_is_log_in': None,
+		   'e_building_id': None,
+		   'e_equipment_id': None,
+		   'e_new_quantity': None,
+		   'e_old_quantity': None,
+		   'e_room_num': None,
+		   'log_id': 531,
+		   'log_type': 'ROOM=DEPARTMENT',
+		   'rd_building_id': '002-0',
+		   'rd_new_department_id': 117508,
+		   'rd_prev_department_id': 117600,
+		   'rd_room_num': '0104-00',
+		   'ro_add_or_remove': None,
+		   'ro_building_id': None,
+		   'ro_occupant_id': None,
+		   'ro_room_num': None,
+		   'time_altered': datetime.datetime(2026, 3, 19, 7, 21, 12),
+		   'user_email': 'ksaunders@gmail.com'}
 		 Department currently assigned to Building 2, 0104-00:  117508
 		 Reassigning back to department 117600
 		 Department currently assigned to Building 2, 0104-00:  117600
